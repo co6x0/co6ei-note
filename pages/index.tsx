@@ -1,9 +1,33 @@
+import Link from 'next/link'
+import Image from 'next/image'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
+import Date from '../components/date'
+import { Layout } from '../components/Layout'
+import { getSortedPostsData } from '../lib/posts'
+import { GetStaticProps } from 'next'
 
-export default function Home() {
+export const getStaticProps: GetStaticProps = async () => {
+  const allPostsData = getSortedPostsData()
+  return {
+    props: {
+      allPostsData,
+    },
+  }
+}
+
+export default function Home({
+  allPostsData,
+}: {
+  allPostsData: {
+    date: string
+    title: string
+    id: string
+  }[]
+}) {
   return (
-    <div className={styles.container}>
+    <Layout>
+      {/* Keep the existing code here */}
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -11,8 +35,18 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Read{' '}
+          <Link href="/posts/first-post">
+            <a>this page!</a>
+          </Link>
         </h1>
+
+        <Image
+          src="/images/profile.jpg"
+          alt="Sample Image"
+          width={144}
+          height={144}
+        />
 
         <p className={styles.description}>
           Get started by editing{' '}
@@ -60,6 +94,24 @@ export default function Home() {
           <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
         </a>
       </footer>
-    </div>
+
+      {/* Add this <section> tag below the existing <section> tag */}
+      <section>
+        <h2>Blog</h2>
+        <ul>
+          {allPostsData.map(({ id, date, title }) => (
+            <li key={id}>
+              <Link href={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
+              <br />
+              <small>
+                <Date dateString={date} />
+              </small>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </Layout>
   )
 }
