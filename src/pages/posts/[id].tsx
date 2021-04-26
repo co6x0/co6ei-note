@@ -35,6 +35,8 @@ const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
         <title>{postData.title.rendered}</title>
       </Head>
 
+      <hr />
+
       {postData.title.rendered}
       <Date dateString={postData.date} />
       <div dangerouslySetInnerHTML={{ __html: postData.content.rendered }} />
