@@ -1,5 +1,5 @@
-import { getPosts } from 'repositories/wordpress'
 import { GetStaticProps, NextPage } from 'next'
+import { getPosts } from 'lib/api'
 import type { WP_REST_API_Posts } from 'wp-types'
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -8,6 +8,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       posts,
     },
+    revalidate: 1,
   }
 }
 
