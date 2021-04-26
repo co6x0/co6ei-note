@@ -2,19 +2,15 @@ import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Layout } from 'components/Layout'
 import { Date } from 'components/date'
-import { getAllPostIds, getPostData } from 'lib/posts'
-
-type Props = {
-  postData: {
-    id: string
-    title: string
-    date: string
-    contentHtml: string
-  }
-}
+import { getPosts, getPost } from 'lib/api'
+import type { WP_REST_API_Post } from 'wp-types'
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllPostIds()
+  const posts = getPosts()
+  const paths = (await posts).map(({ id }) => {
+    return { params: { id: String(id) } }
+  })
+
   return {
     paths,
     fallback: false,
@@ -22,30 +18,27 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  /* @ts-ignore */
-  const postData = await getPostData(params.id as string)
+  const postId = Number(params?.id)
+  const postData = await getPost(postId)
 
   return {
     props: {
       postData,
     },
+    revalidate: 1,
   }
 }
 
-const Post: NextPage<Props> = ({ postData }) => {
+const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
   return (
     <Layout>
       <Head>
-        <title>{postData.title}</title>
+        <title>{postData.title.rendered}</title>
       </Head>
 
-      {postData.title}
-      <br />
-      {postData.id}
-      <br />
+      {postData.title.rendered}
       <Date dateString={postData.date} />
-      <br />
-      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+      <div dangerouslySetInnerHTML={{ __html: postData.content.rendered }} />
     </Layout>
   )
 }
