@@ -13,13 +13,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = Number(params?.id)
   const postData = await getPost(postId)
+
+  if (!postData) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
@@ -34,8 +40,6 @@ const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
       <Head>
         <title>{postData.title.rendered}</title>
       </Head>
-
-      <hr />
 
       {postData.title.rendered}
       <Date dateString={postData.date} />
