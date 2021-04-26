@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Layout } from 'components/Layout'
 import { Date } from 'components/date'
@@ -13,7 +14,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 }
 
@@ -30,6 +31,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
+  const router = useRouter()
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
+
   return (
     <Layout>
       <Head>
