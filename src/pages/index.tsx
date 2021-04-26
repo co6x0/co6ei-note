@@ -1,77 +1,33 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import Head from 'next/head'
-import styles from 'styles/Home.module.scss'
-import { Date } from 'components/date'
-import { Layout } from 'components/Layout'
-import { getSortedPostsData } from 'lib/posts'
-import { GetStaticProps } from 'next'
+import { getPosts } from 'repositories/wordpress'
+import { GetStaticProps, NextPage } from 'next'
+import type { WP_REST_API_Posts } from 'wp-types'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData()
+  const posts = await getPosts()
   return {
     props: {
-      allPostsData,
+      posts,
     },
   }
 }
 
-export default function Home({
-  allPostsData,
-}: {
-  allPostsData: {
-    date: string
-    title: string
-    id: string
-  }[]
-}) {
+const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
+  console.log(posts)
   return (
-    <Layout>
-      {/* Keep the existing code here */}
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>Hello, Next.js</h1>
-
-        <Image
-          src="/images/profile.jpg"
-          alt="Sample Image"
-          width={144}
-          height={144}
-        />
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-
-      {/* Add this <section> tag below the existing <section> tag */}
+    <div>
       <section>
         <h2>Blog</h2>
         <ul>
-          {allPostsData.map(({ id, date, title }) => (
+          {posts.map(({ id, title, excerpt, date }) => (
             <li key={id}>
-              <Link href={`/posts/${id}`}>
-                <a>{title}</a>
-              </Link>
-              <br />
-              <small>
-                <Date dateString={date} />
-              </small>
+              <strong>{title.rendered}</strong>
+              <p>{excerpt.rendered}</p>
+              <time>{date}</time>
             </li>
           ))}
         </ul>
       </section>
-    </Layout>
+    </div>
   )
 }
+export default Home
