@@ -1,8 +1,8 @@
 import Head from 'next/head'
+import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Layout } from 'components/Layout'
-import { Date } from 'components/date'
 import { getPosts, getPost } from 'lib/api'
 import type { WP_REST_API_Post } from 'wp-types'
 
@@ -36,15 +36,22 @@ const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
     return <div>Loading...</div>
   }
 
+  const convertDate = (dateString: string) => {
+    return dayjs(dateString).format('YYYY-MM-DD')
+  }
+
   return (
     <Layout>
       <Head>
         <title>{postData.title.rendered}</title>
       </Head>
 
-      {postData.title.rendered}
-      <Date dateString={postData.date} />
-      <div dangerouslySetInnerHTML={{ __html: postData.content.rendered }} />
+      <article>
+        <h1>{postData.title.rendered}</h1>
+        <time>{convertDate(postData.date)}</time>
+        <hr />
+        <div dangerouslySetInnerHTML={{ __html: postData.content.rendered }} />
+      </article>
     </Layout>
   )
 }
