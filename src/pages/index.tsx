@@ -2,6 +2,7 @@ import { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
 import dayjs from 'dayjs'
+import DOMPurify from 'isomorphic-dompurify'
 import { Layout } from 'components/Layout'
 import { getPosts } from 'lib/api'
 import type { WP_REST_API_Posts } from 'wp-types'
@@ -17,14 +18,11 @@ export const getStaticProps: GetStaticProps = async () => {
 }
 
 const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
-  const removeLinkMore = (excerpt: string) => {
-    const index = excerpt.indexOf('<p class="link-more">')
-    return index ? excerpt.slice(0, index) : excerpt
-  }
-
   const convertDate = (dateString: string) => {
     return dayjs(dateString).format('YYYY-MM-DD')
   }
+
+  const htmlExcerpt = (excerpt: string) => DOMPurify.sanitize(excerpt)
 
   return (
     <Layout>
@@ -42,7 +40,7 @@ const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
               </h2>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: removeLinkMore(excerpt.rendered),
+                  __html: htmlExcerpt(excerpt.rendered),
                 }}
               />
               <time>{convertDate(date)}</time>
