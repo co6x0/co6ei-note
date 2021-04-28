@@ -50,7 +50,7 @@ const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
         <h1>{postData.title.rendered}</h1>
         <time>{convertDate(postData.date)}</time>
         <hr />
-        <div dangerouslySetInnerHTML={{ __html: postData.content.rendered }} />
+        <main dangerouslySetInnerHTML={{ __html: postData.content.rendered }} />
       </article>
     </Layout>
   )
