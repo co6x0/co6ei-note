@@ -1,5 +1,9 @@
 import WPAPI from 'wpapi'
-import type { WP_REST_API_Posts, WP_REST_API_Post } from 'wp-types'
+import type {
+  WP_REST_API_Posts,
+  WP_REST_API_Post,
+  WP_REST_API_Attachment,
+} from 'wp-types'
 
 const wp = new WPAPI({ endpoint: String(process.env.WPAPI_ENDPOINT) })
 export const getPosts = async () => {
@@ -21,4 +25,15 @@ export const getPost = async (id: number) => {
       throw new Error(error)
     })
   return post
+}
+
+export const getMedia = async (id: number) => {
+  const media: WP_REST_API_Attachment = await wp
+    .media()
+    .id(id)
+    .get()
+    .catch((error) => {
+      throw new Error(error)
+    })
+  return media
 }

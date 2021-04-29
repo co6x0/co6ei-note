@@ -1,5 +1,6 @@
 import { createElement } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
 import dayjs from 'dayjs'
 import unified from 'unified'
 import rehypeParse from 'rehype-parse'
@@ -9,8 +10,8 @@ import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Layout } from 'components/Layout'
 import { ArticleImage } from 'components/ArticleImage'
-import { getPosts, getPost } from 'lib/api'
-import type { WP_REST_API_Post } from 'wp-types'
+import { getPosts, getPost, getMedia } from 'lib/api'
+import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getPosts()
@@ -28,15 +29,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = Number(params?.id)
   const postData = await getPost(postId)
 
+  const featuredImage = postData.featured_media
+    ? await getMedia(postData.featured_media)
+    : null
+
   return {
     props: {
       postData,
+      featuredImage,
     },
     revalidate: 1,
   }
 }
 
-const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
+const Post: NextPage<{
+  postData: WP_REST_API_Post
+  featuredImage: WP_REST_API_Attachment | null
+}> = ({ postData, featuredImage }) => {
   const router = useRouter()
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -45,6 +54,11 @@ const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
   const convertDate = (dateString: string) => {
     return dayjs(dateString).format('YYYY-MM-DD')
   }
+
+  const strippedHtmlExcerpt = postData.excerpt.rendered
+    .replace(/(<([^>]+)>)/gi, '')
+    .replace(/\r?\n/g, '')
+    .replace('[&hellip;]', '…')
 
   const htmlPostData = DOMPurify.sanitize(postData.content.rendered)
   const processor = unified()
@@ -56,13 +70,43 @@ const Post: NextPage<{ postData: WP_REST_API_Post }> = ({ postData }) => {
       },
     })
 
+  const CoverImage = () => {
+    const src = featuredImage?.guid.rendered
+    const width =
+      typeof featuredImage?.media_details.width === 'number' &&
+      featuredImage.media_details.width
+    const height =
+      typeof featuredImage?.media_details.height === 'number' &&
+      featuredImage.media_details.height
+
+    return featuredImage ? (
+      <Image
+        src={src || ''}
+        width={width || 0}
+        height={height || 0}
+        alt={`${postData.title.rendered}のアイキャッチ画像`}
+      />
+    ) : (
+      <Image
+        src="/images/default-cover-image.png"
+        width="1280"
+        height="768"
+        alt=""
+      />
+    )
+  }
+
   return (
     <Layout>
       <Head>
-        <title>{postData.title.rendered}</title>
+        <title>{postData.title.rendered}｜co6ei note</title>
+        {postData.excerpt && (
+          <meta name="description" content={strippedHtmlExcerpt} />
+        )}
       </Head>
 
       <article>
+        <CoverImage />
         <h1>{postData.title.rendered}</h1>
         <time>{convertDate(postData.date)}</time>
         <hr />

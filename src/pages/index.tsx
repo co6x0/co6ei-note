@@ -27,7 +27,11 @@ const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
   return (
     <Layout>
       <Head>
-        <title>Next WordPress Blog</title>
+        <title>co6ei note</title>
+        <meta
+          name="description"
+          content="UI Designer, Product Manager, Web Enginnerなどとしての仕事をするKomura Nao(小村奈央)による、デザインや開発やその他自分の興味のあることなどを記すブログ。"
+        />
       </Head>
 
       <section>
