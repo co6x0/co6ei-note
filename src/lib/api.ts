@@ -6,7 +6,9 @@ import type {
 } from 'wp-types'
 
 const wp = new WPAPI({
-  endpoint: String('https://' + process.env.CMS_DOMAIN + '/wp-json'),
+  endpoint: String(
+    'https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN + '/wp-json'
+  ),
 })
 export const getPosts = async () => {
   const posts: WP_REST_API_Posts = await wp
