@@ -13,7 +13,7 @@ export const ArticleImage: React.VFC<TestProps> = ({
   height,
   alt,
 }) => {
-  return src.startsWith('https://cms.sixaxd.com') ? (
+  return src.startsWith(String('https://' + process.env.CMS_DOMAIN)) ? (
     <Image src={src} width={width} height={height} alt={alt} />
   ) : (
     <img src={src} width={width} height={height} alt={alt} />
