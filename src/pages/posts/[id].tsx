@@ -1,21 +1,23 @@
 import { createElement } from 'react'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
+//
 import dayjs from 'dayjs'
 import unified from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeReact from 'rehype-react'
 const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
-import { useRouter } from 'next/router'
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import 'highlight.js/styles/a11y-dark.css'
+import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 //
 import { Layout } from 'components/Layout'
 import { ArticleImage } from 'components/ArticleImage'
 import { ArticleLink } from 'components/ArticleLink'
 import { getPosts, getPost, getMedia } from 'lib/api'
-import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
+import styles from 'styles/postId.module.scss'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getPosts()
@@ -111,12 +113,14 @@ const Post: NextPage<{
         )}
       </Head>
 
-      <article>
+      <article className={styles.root}>
         <CoverImage />
         <h1>{postData.title.rendered}</h1>
         <time>{convertDate(postData.date)}</time>
         <hr />
-        {processor.processSync(htmlPostData).result}
+        <main className={styles['article-body']}>
+          <>{processor.processSync(htmlPostData).result}</>
+        </main>
       </article>
     </Layout>
   )

@@ -1,11 +1,11 @@
+@use 'styles/variables' as *;
+
 html,
 body {
+  @include body2;
+  font-family: $font-default;
   padding: 0;
   margin: 0;
-  font-family: Helvetica Neue, Arial, Roboto, 'Noto Sans JP', Hiragino Sans,
-    Hiragino Kaku Gothic ProN, Meiryo, sans-serif;
-  line-height: 1.6;
-  font-size: 18px;
 }
 
 * {
@@ -13,7 +13,7 @@ body {
 }
 
 a {
-  color: #0070f3;
+  color: $ui_primary40;
   text-decoration: none;
 }
 
@@ -24,4 +24,16 @@ a:hover {
 img {
   max-width: 100%;
   display: block;
+}
+
+ul {
+  margin: 0;
+}
+
+// Table of Contents by WordPress Plugin
+#ez-toc-container {
+  background: #f8f8fa;
+  border-radius: 4px;
+  padding: 32px 8px;
+  margin: 56px auto;
 }

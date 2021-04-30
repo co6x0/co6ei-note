@@ -1,7 +1,10 @@
+@use 'styles/variables' as *;
+
 .container {
-  max-width: 36rem;
-  padding: 0 1rem;
-  margin: 3rem auto 6rem;
+  @include container;
+  max-width: 880px;
+  margin-top: 64px;
+  margin-bottom: 64px;
 }
 
 .header {

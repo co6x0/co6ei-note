@@ -1,0 +1,128 @@
+$breakpoints: (
+  xl: 1920,
+  lg: 1280,
+  md: 960,
+  sm: 600,
+) !default;
+
+$font-default: Helvetica Neue, Arial, Roboto, 'Noto Sans JP', Hiragino Sans,
+  Hiragino Kaku Gothic ProN, Meiryo, sans-serif;
+$font-mono: 'Roboto Mono', monospace;
+
+@mixin responsive($breakpoint: sm) {
+  @media (min-width: #{map-get($breakpoints, $breakpoint)}px) {
+    @content;
+  }
+}
+
+@mixin container {
+  width: 100%;
+  max-width: calc(1280px + 128px * 2);
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @include responsive(sm) {
+    padding: 0 40px;
+  }
+
+  @include responsive(md) {
+    padding: 0 80px;
+  }
+
+  @include responsive(lg) {
+    padding: 0 128px;
+  }
+}
+
+// typography
+@mixin headline1 {
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 120px;
+  letter-spacing: 0.004em;
+}
+
+@mixin headline2 {
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 80px;
+  letter-spacing: 0.004em;
+}
+
+@mixin headline3 {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 52px;
+  letter-spacing: 0.002em;
+}
+
+@mixin headline4 {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0.004em;
+}
+
+@mixin headline5 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: 0.004em;
+}
+
+@mixin headline6 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.004em;
+}
+
+@mixin subtitle1 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.002em;
+}
+
+@mixin subtitle2 {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.002em;
+}
+
+@mixin body1 {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.004em;
+}
+
+@mixin body2 {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.004em;
+}
+
+@mixin article_body1 {
+  font-size: 17px;
+  line-height: 30px;
+  letter-spacing: 0.008em;
+}
+
+@mixin article_body2 {
+  font-size: 14px;
+  line-height: 26px;
+  letter-spacing: 0.004em;
+}
+
+@mixin article_code {
+  font-family: $font-mono;
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+
+// colors
+$ui_primary40: #056add;
+
+$border_black: rgba(0, 0, 0, 0.08);

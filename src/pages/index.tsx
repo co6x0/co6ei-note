@@ -3,9 +3,11 @@ import Link from 'next/link'
 import Head from 'next/head'
 import dayjs from 'dayjs'
 import DOMPurify from 'isomorphic-dompurify'
+import type { WP_REST_API_Posts } from 'wp-types'
+//
 import { Layout } from 'components/Layout'
 import { getPosts } from 'lib/api'
-import type { WP_REST_API_Posts } from 'wp-types'
+import styles from 'styles/home.module.scss'
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getPosts()
@@ -34,20 +36,22 @@ const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
         />
       </Head>
 
-      <section>
-        <h1>Blog</h1>
+      <section className={styles.root}>
+        <h1>co6ei note</h1>
         <ul>
           {posts.map(({ id, title, excerpt, date }) => (
-            <li key={id}>
-              <h2>
-                <Link href={`/posts/${id}`}>{title.rendered}</Link>
-              </h2>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: htmlExcerpt(excerpt.rendered),
-                }}
-              />
-              <time>{convertDate(date)}</time>
+            <li className={styles['article-list']} key={id}>
+              <Link href={`/posts/${id}`}>
+                <a>
+                  <h2>{title.rendered}</h2>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: htmlExcerpt(excerpt.rendered),
+                    }}
+                  />
+                  <time>{convertDate(date)}</time>
+                </a>
+              </Link>
             </li>
           ))}
         </ul>

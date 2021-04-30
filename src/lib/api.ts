@@ -13,6 +13,7 @@ const wp = new WPAPI({
 export const getPosts = async () => {
   const posts: WP_REST_API_Posts = await wp
     .posts()
+    .perPage(20)
     .get()
     .catch((error) => {
       throw new Error(error)
