@@ -1,18 +1,13 @@
 import Image from 'next/image'
 
-type TestProps = {
+type Props = {
   src: string
   alt: string
   width: number
   height: number
 }
 
-export const ArticleImage: React.VFC<TestProps> = ({
-  src,
-  width,
-  height,
-  alt,
-}) => {
+export const ArticleImage: React.VFC<Props> = ({ src, width, height, alt }) => {
   return src.startsWith(
     String('https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN)
   ) ? (

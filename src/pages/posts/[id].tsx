@@ -5,11 +5,15 @@ import dayjs from 'dayjs'
 import unified from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeReact from 'rehype-react'
+const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
 import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import 'highlight.js/styles/a11y-dark.css'
+//
 import { Layout } from 'components/Layout'
 import { ArticleImage } from 'components/ArticleImage'
+import { ArticleLink } from 'components/ArticleLink'
 import { getPosts, getPost, getMedia } from 'lib/api'
 import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 
@@ -63,10 +67,12 @@ const Post: NextPage<{
   const htmlPostData = DOMPurify.sanitize(postData.content.rendered)
   const processor = unified()
     .use(rehypeParse, { fragment: true })
+    .use(rehypeHighlight)
     .use(rehypeReact, {
       createElement,
       components: {
         img: (props: any) => <ArticleImage {...props} />,
+        a: (props: any) => <ArticleLink {...props} />,
       },
     })
 
