@@ -1,5 +1,5 @@
 module.exports = {
   images: {
-    domains: ['cms.sixaxd.com'],
+    domains: [process.env.CMS_DOMAIN],
   },
 }

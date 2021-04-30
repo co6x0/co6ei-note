@@ -5,7 +5,9 @@ import type {
   WP_REST_API_Attachment,
 } from 'wp-types'
 
-const wp = new WPAPI({ endpoint: String(process.env.WPAPI_ENDPOINT) })
+const wp = new WPAPI({
+  endpoint: String('https://' + process.env.CMS_DOMAIN + '/wp-json'),
+})
 export const getPosts = async () => {
   const posts: WP_REST_API_Posts = await wp
     .posts()
