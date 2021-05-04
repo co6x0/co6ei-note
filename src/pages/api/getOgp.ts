@@ -2,14 +2,6 @@ import { VercelRequest, VercelResponse } from '@vercel/node'
 import axios from 'axios'
 import { JSDOM } from 'jsdom'
 
-/**
- * OGPタグを取得して、そのcontentをJSON形式で返す.
- * 使用例:
- *    endpoint/api/ogp?url="サイトのURL"
- *
- * @param req HTTP request
- * @param res HTTP responce
- */
 export default async function (req: VercelRequest, res: VercelResponse) {
   const url = getUrlParameter(req)
   if (!url) {

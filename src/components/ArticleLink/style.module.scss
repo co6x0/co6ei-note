@@ -1,0 +1,44 @@
+@use 'styles/variables' as *;
+
+.card {
+  display: flex;
+  border: solid 1px $border_black;
+  border-radius: 4px;
+  padding: 16px 20px;
+
+  > img {
+    width: 168px;
+    height: auto;
+    margin-left: 24px;
+    flex-shrink: 1;
+    object-fit: contain;
+  }
+
+  > span {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .title {
+    @include article_body1;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .desc {
+    @include body2;
+    color: $text_black60;
+    display: block;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  .url {
+    @include caption;
+    color: $text_black20;
+    display: block;
+    margin-top: 8px;
+  }
+}

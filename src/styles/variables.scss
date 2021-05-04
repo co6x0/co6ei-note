@@ -103,6 +103,18 @@ $font-mono: 'Roboto Mono', monospace;
   letter-spacing: 0.004em;
 }
 
+@mixin caption {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.004em;
+}
+
+@mixin small {
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.004em;
+}
+
 @mixin article_body1 {
   font-size: 17px;
   line-height: 30px;
@@ -126,3 +138,6 @@ $font-mono: 'Roboto Mono', monospace;
 $ui_primary40: #056add;
 
 $border_black: rgba(0, 0, 0, 0.08);
+
+$text_black20: #1f202c;
+$text_black60: #7c7c83;

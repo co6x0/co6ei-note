@@ -4,6 +4,7 @@ html,
 body {
   @include body2;
   font-family: $font-default;
+  color: $text_black20;
   padding: 0;
   margin: 0;
 }
