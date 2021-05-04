@@ -2,9 +2,31 @@
 
 .root {
   margin: 0;
-  margin-bottom: 40px;
+  margin-top: 96px;
+  margin-bottom: 96px;
+  // padding-top: 24px;
+  // border-top: solid 1px $border_black;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 
   @include responsive(md) {
-    margin-bottom: 56px;
+    margin-top: 120px;
+    margin-bottom: 96px;
+  }
+
+  > .links {
+    > div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      > a {
+        display: flex;
+        padding: 8px;
+        &:not(:last-of-type) {
+          margin-right: 8px;
+        }
+      }
+    }
   }
 }
