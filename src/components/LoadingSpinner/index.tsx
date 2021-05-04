@@ -1,4 +1,4 @@
-import styles from './styles.module.scss'
+import styles from './style.module.scss'
 
 export const LoadingSpinner: React.VFC = () => {
   return (
