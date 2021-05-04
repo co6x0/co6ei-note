@@ -17,8 +17,12 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     const html = responce.data
     const dom = new JSDOM(html)
     const meta = dom.window.document.head.querySelectorAll('meta')
+    const originTitle = {
+      originTitle: dom.window.document.head.querySelector('title')?.textContent,
+    }
     const ogp = extractOgp([...meta])
-    res.status(200).json(ogp)
+    const values = Object.assign(originTitle, ogp)
+    res.status(200).json(values)
   } catch (e) {
     errorResponce(res)
   }

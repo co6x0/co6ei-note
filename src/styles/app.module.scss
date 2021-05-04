@@ -1,0 +1,8 @@
+@use 'styles/variables' as *;
+
+.root {
+  @include container;
+  max-width: 880px;
+  margin-top: 64px;
+  margin-bottom: 64px;
+}

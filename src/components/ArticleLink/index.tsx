@@ -10,9 +10,10 @@ type Props = {
 }
 
 type ResOgp = {
-  title: string
-  image: string
-  description: string
+  originTitle: string
+  title?: string
+  image?: string
+  description?: string
 }
 
 export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
@@ -56,12 +57,14 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
       target="_blank"
       rel="noopener noreferrer"
     >
+      {data.image && (
+        <img src={data.image} alt="" width="168" height="90" loading="lazy" />
+      )}
       <span>
-        <span className={styles.title}>{data.title ?? 'タイトル未設定'}</span>
+        <span className={styles.title}>{data.title ?? data.originTitle}</span>
         <span className={styles.desc}>{data.description ?? ''}</span>
         <span className={styles.url}>{href}</span>
       </span>
-      {data.image && <img src={data.image} alt="" />}
     </a>
   )
 }

@@ -1,14 +1,35 @@
 @use 'styles/variables' as *;
 
 .root {
-  h1 {
-    @include headline3;
+  > h1 {
+    @include headline4;
+    margin: 24px auto;
+
+    @include responsive(md) {
+      @include headline3;
+      margin: 40px auto;
+    }
+  }
+
+  > hr {
+    border-color: $border_black;
+    margin: 16px 0 0 0;
+  }
+}
+
+.featured-image {
+  width: calc(100% + 40px);
+  margin-left: -20px;
+
+  @include responsive(sm) {
+    width: 100%;
+    margin-left: 0;
   }
 }
 
 .article-body {
-  @include article_body1;
-  margin: 56px auto;
+  @include article_body2;
+  margin: 48px auto;
 
   p {
     margin: 0 auto 32px auto;
@@ -19,18 +40,28 @@
   }
 
   h2 {
-    @include headline4;
-    margin: 96px auto 32px auto;
+    @include headline5;
+    position: relative;
+    margin: 96px auto 24px auto;
+    &::before {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 4px;
+      margin-bottom: 16px;
+      background: $text_black20;
+    }
   }
 
   h3 {
-    @include headline5;
-    margin: 64px auto 32px auto;
+    @include headline6;
+    margin: 64px auto 24px auto;
   }
 
   h4 {
     @include headline6;
-    margin: 56px auto 32px auto;
+    font-weight: 400;
+    margin: 56px auto 24px auto;
   }
 
   hr {
@@ -70,8 +101,8 @@
     margin: 40px auto;
     position: relative;
     > code {
-      @include article_code;
-      padding: 24px;
+      @include article_code2;
+      padding: 20px;
       border-radius: 4px;
       &[class*='language'] {
         &::before {
@@ -127,6 +158,41 @@
         &::before {
           content: 'JSX';
         }
+      }
+    }
+  }
+
+  @include responsive(md) {
+    @include article_body1;
+    margin: 56px auto;
+
+    p {
+      margin: 0 auto 32px auto;
+    }
+
+    a {
+      word-break: break-all;
+    }
+
+    h2 {
+      @include headline4;
+      margin: 112px auto 32px auto;
+    }
+
+    h3 {
+      @include headline5;
+      margin: 64px auto 32px auto;
+    }
+
+    h4 {
+      @include headline6;
+      margin: 56px auto 32px auto;
+    }
+
+    pre {
+      > code {
+        @include article_code1;
+        padding: 24px;
       }
     }
   }

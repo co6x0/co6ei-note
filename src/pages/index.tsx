@@ -5,9 +5,9 @@ import dayjs from 'dayjs'
 import DOMPurify from 'isomorphic-dompurify'
 import type { WP_REST_API_Posts } from 'wp-types'
 //
-import { Layout } from 'components/Layout'
 import { getPosts } from 'lib/api'
 import styles from 'styles/home.module.scss'
+import { HtmlHead } from 'components/HtmlHead'
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getPosts()
@@ -27,17 +27,14 @@ const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
   const htmlExcerpt = (excerpt: string) => DOMPurify.sanitize(excerpt)
 
   return (
-    <Layout>
-      <Head>
-        <title>co6ei note</title>
-        <meta
-          name="description"
-          content="UI Designer, Product Manager, Web Enginnerなどとしての仕事をするKomura Nao(小村奈央)による、デザインや開発やその他自分の興味のあることなどを記すブログ。"
-        />
-      </Head>
+    <>
+      <HtmlHead
+        title="co6ei note"
+        description="UI Designer, Product Manager, Web Engineerなどとしての仕事をするKomura Nao(小村奈央)による、デザインや開発やその他自分の興味のあることなどを記すブログ。"
+        path="/"
+      />
 
       <section className={styles.root}>
-        <h1>co6ei note</h1>
         <ul>
           {posts.map(({ id, title, excerpt, date }) => (
             <li className={styles['article-list']} key={id}>
@@ -56,7 +53,7 @@ const Home: NextPage<{ posts: WP_REST_API_Posts }> = ({ posts }) => {
           ))}
         </ul>
       </section>
-    </Layout>
+    </>
   )
 }
 export default Home

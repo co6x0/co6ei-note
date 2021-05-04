@@ -13,9 +13,9 @@ import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
 import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 //
-import { Layout } from 'components/Layout'
 import { ArticleImage } from 'components/ArticleImage'
 import { ArticleLink } from 'components/ArticleLink'
+import { HtmlHead } from 'components/HtmlHead'
 import { getPosts, getPost, getMedia } from 'lib/api'
 import styles from 'styles/postId.module.scss'
 
@@ -87,31 +87,32 @@ const Post: NextPage<{
       typeof featuredImage?.media_details.height === 'number' &&
       featuredImage.media_details.height
 
-    return featuredImage ? (
-      <Image
-        src={src || ''}
-        width={width || 0}
-        height={height || 0}
-        alt={`${postData.title.rendered}のアイキャッチ画像`}
-      />
-    ) : (
-      <Image
-        src="/images/default-cover-image.png"
-        width="1280"
-        height="768"
-        alt=""
-      />
+    return (
+      featuredImage && (
+        <div className={styles['featured-image']}>
+          <Image
+            src={src || ''}
+            width={width || 0}
+            height={height || 0}
+            alt={`${postData.title.rendered}のアイキャッチ画像`}
+          />
+        </div>
+      )
     )
   }
 
   return (
-    <Layout>
-      <Head>
-        <title>{postData.title.rendered}｜co6ei note</title>
-        {postData.excerpt && (
-          <meta name="description" content={strippedHtmlExcerpt} />
-        )}
-      </Head>
+    <>
+      <HtmlHead
+        title={postData.title.rendered}
+        description={strippedHtmlExcerpt}
+        path={router.asPath}
+        imageSrc={
+          featuredImage
+            ? featuredImage.guid.rendered
+            : `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}/images/default-cover-image.png`
+        }
+      />
 
       <article className={styles.root}>
         <CoverImage />
@@ -122,7 +123,7 @@ const Post: NextPage<{
           <>{processor.processSync(htmlPostData).result}</>
         </main>
       </article>
-    </Layout>
+    </>
   )
 }
 

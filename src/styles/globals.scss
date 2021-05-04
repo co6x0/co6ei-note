@@ -35,6 +35,11 @@ ul {
 #ez-toc-container {
   background: #f8f8fa;
   border-radius: 4px;
-  padding: 32px 8px;
-  margin: 56px auto;
+  padding: 24px 24px 24px 8px;
+  margin: 48px auto;
+
+  @include responsive(md) {
+    padding: 32px 32px 32px 8px;
+    margin: 56px auto;
+  }
 }

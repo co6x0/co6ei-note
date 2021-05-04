@@ -19,7 +19,7 @@ $font-mono: 'Roboto Mono', monospace;
   width: 100%;
   max-width: calc(1280px + 128px * 2);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 20px;
 
   @include responsive(sm) {
     padding: 0 40px;
@@ -50,14 +50,14 @@ $font-mono: 'Roboto Mono', monospace;
 }
 
 @mixin headline3 {
-  font-size: 46px;
+  font-size: 41px;
   font-weight: 700;
   line-height: 52px;
   letter-spacing: 0.002em;
 }
 
 @mixin headline4 {
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 40px;
   letter-spacing: 0.004em;
@@ -122,14 +122,21 @@ $font-mono: 'Roboto Mono', monospace;
 }
 
 @mixin article_body2 {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 26px;
   letter-spacing: 0.004em;
 }
 
-@mixin article_code {
+@mixin article_code1 {
   font-family: $font-mono;
   font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+
+@mixin article_code2 {
+  font-family: $font-mono;
+  font-size: 13px;
   line-height: 22px;
   letter-spacing: 0;
 }

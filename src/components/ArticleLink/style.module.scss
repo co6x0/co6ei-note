@@ -2,14 +2,16 @@
 
 .card {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   border: solid 1px $border_black;
   border-radius: 4px;
-  padding: 16px 20px;
+  padding: 12px;
 
   > img {
-    width: 168px;
+    width: 88px;
     height: auto;
-    margin-left: 24px;
+    margin-left: 12px;
     flex-shrink: 1;
     object-fit: contain;
   }
@@ -17,28 +19,60 @@
   > span {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: auto;
+    min-width: calc(100% - 88px - 12px);
   }
 
   .title {
-    @include article_body1;
-    font-weight: 700;
+    @include subtitle1;
     display: block;
     margin-bottom: 8px;
   }
   .desc {
-    @include body2;
+    @include caption;
     color: $text_black60;
     display: block;
     display: -webkit-box;
     overflow: hidden;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
   .url {
-    @include caption;
-    color: $text_black20;
+    @include small;
+    color: $text_black60;
     display: block;
     margin-top: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @include responsive(sm) {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    padding: 16px 20px;
+
+    > img {
+      width: 168px;
+      margin-left: 24px;
+    }
+
+    > span {
+      width: auto;
+      min-width: calc(100% - 168px - 24px);
+    }
+
+    .title {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .desc {
+      @include body2;
+    }
+
+    .url {
+      @include caption;
+    }
   }
 }
