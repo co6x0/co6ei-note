@@ -13,9 +13,10 @@ import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
 import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 //
+import { HtmlHead } from 'components/HtmlHead'
 import { ArticleImage } from 'components/ArticleImage'
 import { ArticleLink } from 'components/ArticleLink'
-import { HtmlHead } from 'components/HtmlHead'
+import { ShareButtons } from 'components/ShareButtons'
 import { getPosts, getPost, getMedia } from 'lib/api'
 import styles from 'styles/postId.module.scss'
 
@@ -117,8 +118,10 @@ const Post: NextPage<{
       <article className={styles.root}>
         <CoverImage />
         <h1>{postData.title.rendered}</h1>
-        <time>{convertDate(postData.date)}</time>
-        <hr />
+        <div className={styles['head-bottom']}>
+          <time>{convertDate(postData.date)}</time>
+          <ShareButtons title={postData.title.rendered} path={router.asPath} />
+        </div>
         <main className={styles['article-body']}>
           <>{processor.processSync(htmlPostData).result}</>
         </main>

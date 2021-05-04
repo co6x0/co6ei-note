@@ -11,9 +11,12 @@
     }
   }
 
-  > hr {
-    border-color: $border_black;
-    margin: 16px 0 0 0;
+  > .head-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid 2px $border_black;
+    padding-bottom: 8px;
   }
 }
 

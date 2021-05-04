@@ -1,0 +1,17 @@
+@use 'styles/variables' as *;
+
+.root {
+  display: flex;
+  > :first-child {
+    margin-right: 8px;
+  }
+
+  > button,
+  > a {
+    display: flex;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+  }
+}
