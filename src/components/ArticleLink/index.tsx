@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import useSWR from 'swr'
+//
 import styles from './style.module.scss'
+import { LoadingSpinner } from 'components/LoadingSpinner'
 
 type Props = {
   href: string
@@ -44,8 +46,8 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
   }
 
   const { data, error } = useSWR(href, fetcher)
-  if (error) return <span>Error</span>
-  if (!data) return <span>Loading</span>
+  if (error) return <></>
+  if (!data) return <LoadingSpinner />
 
   return (
     <a
