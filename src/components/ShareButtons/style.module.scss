@@ -13,5 +13,8 @@
     border: none;
     padding: 8px;
     cursor: pointer;
+    > svg {
+      color: $text_black60;
+    }
   }
 }

@@ -24,6 +24,11 @@
   width: calc(100% + 40px);
   margin-left: -20px;
 
+  > img {
+    width: 100%;
+    height: auto;
+  }
+
   @include responsive(sm) {
     width: 100%;
     margin-left: 0;
@@ -36,6 +41,15 @@
 
   p {
     margin: 0 auto 32px auto;
+    word-break: break-word;
+
+    > code {
+      @include article_code2;
+      color: $ui_secondary40;
+      background: $background90;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
   }
 
   a {
@@ -87,16 +101,9 @@
     border-radius: 4px;
     overflow: hidden;
     display: flex;
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      box-sizing: border-box;
-      z-index: 1;
+    > img {
       width: 100%;
-      height: 100%;
-      border: solid 1px $border_black;
-      border-radius: 4px;
+      height: auto;
     }
   }
 
@@ -171,6 +178,9 @@
 
     p {
       margin: 0 auto 32px auto;
+      > code {
+        @include article_code1;
+      }
     }
 
     a {

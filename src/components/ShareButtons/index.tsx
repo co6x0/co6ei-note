@@ -25,11 +25,16 @@ export const ShareButtons: React.VFC<Props> = ({ title, path }) => {
 
   return (
     <div className={styles.root}>
-      <a href={linkUrl} target="_blank" rel="noopener noreferrer">
-        <IconTwitter title="Twitterで共有" />
+      <a
+        href={linkUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="記事をTwitterで共有"
+      >
+        <IconTwitter title="記事をTwitterで共有" />
       </a>
-      <button onClick={handleClick}>
-        <IconShare title="共有する" />
+      <button onClick={handleClick} aria-label="記事を共有する">
+        <IconShare title="記事を共有する" />
       </button>
 
       <Toaster

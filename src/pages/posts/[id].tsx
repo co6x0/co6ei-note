@@ -1,7 +1,5 @@
 import { createElement } from 'react'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 //
 import dayjs from 'dayjs'
@@ -14,7 +12,6 @@ import 'highlight.js/styles/a11y-dark.css'
 import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 //
 import { HtmlHead } from 'components/HtmlHead'
-import { ArticleImage } from 'components/ArticleImage'
 import { ArticleLink } from 'components/ArticleLink'
 import { ShareButtons } from 'components/ShareButtons'
 import { getPosts, getPost, getMedia } from 'lib/api'
@@ -74,31 +71,61 @@ const Post: NextPage<{
     .use(rehypeReact, {
       createElement,
       components: {
-        img: (props: any) => <ArticleImage {...props} />,
         a: (props: any) => <ArticleLink {...props} />,
       },
     })
 
   const CoverImage = () => {
-    const src = featuredImage?.guid.rendered
-    const width =
-      typeof featuredImage?.media_details.width === 'number' &&
-      featuredImage.media_details.width
-    const height =
-      typeof featuredImage?.media_details.height === 'number' &&
-      featuredImage.media_details.height
+    type MediaDetailsProps = {
+      sizes: {
+        full: {
+          source_url: string
+          width: number
+          height: number
+        }
+        large: {
+          source_url: string
+          width: number
+          height: number
+        }
+        medium_large: {
+          source_url: string
+          width: number
+          height: number
+        }
+      }
+    }
+
+    if (!featuredImage) return <></>
+
+    const mediaDetails = featuredImage.media_details as MediaDetailsProps
+    const getFormatImage = (size: 'full' | 'large' | 'medium_large') => {
+      return {
+        source_url: mediaDetails.sizes[size].source_url,
+        width: mediaDetails.sizes[size].width,
+        height: mediaDetails.sizes[size].height,
+      }
+    }
+
+    const imageFull = getFormatImage('full')
+    const imageLarge = getFormatImage('large')
+    const imageMedium = getFormatImage('medium_large')
 
     return (
-      featuredImage && (
-        <div className={styles['featured-image']}>
-          <Image
-            src={src || ''}
-            width={width || 0}
-            height={height || 0}
-            alt={`${postData.title.rendered}のアイキャッチ画像`}
-          />
-        </div>
-      )
+      <div className={styles['featured-image']}>
+        <img
+          sizes="(max-width: 600px) 600px, 720px"
+          srcSet={`
+            ${imageFull.source_url} ${imageFull.width}w,
+            ${imageLarge.source_url} ${imageLarge.width}w,
+            ${imageMedium.source_url} ${imageMedium.width}w
+          `}
+          src={imageFull.source_url}
+          width={imageFull.width}
+          height={imageFull.height}
+          alt={`${postData.title.rendered}のアイキャッチ画像`}
+        />
+      </div>
     )
   }
 
