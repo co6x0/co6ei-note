@@ -9,12 +9,17 @@ import rehypeReact from 'rehype-react'
 const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
-import { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
+import {
+  WP_REST_API_Post,
+  WP_REST_API_Attachment,
+  WP_REST_API_Categories,
+} from 'wp-types'
 //
 import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'
 import { ShareButtons } from 'components/ShareButtons'
-import { getPosts, getPost, getMedia } from 'lib/api'
+import { SideNav } from 'components/SideNav'
+import { getPosts, getPost, getMedia, getCategories } from 'lib/api'
 import styles from 'styles/postId.module.scss'
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -32,6 +37,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postId = Number(params?.id)
   const postData = await getPost(postId)
+  const categories = await getCategories()
 
   const featuredImage = postData.featured_media
     ? await getMedia(postData.featured_media)
@@ -41,6 +47,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       postData,
       featuredImage,
+      categories,
     },
     revalidate: 1,
   }
@@ -49,7 +56,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 const Post: NextPage<{
   postData: WP_REST_API_Post
   featuredImage: WP_REST_API_Attachment | null
-}> = ({ postData, featuredImage }) => {
+  categories: WP_REST_API_Categories
+}> = ({ postData, featuredImage, categories }) => {
   const router = useRouter()
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -130,7 +138,7 @@ const Post: NextPage<{
   }
 
   return (
-    <>
+    <div className={styles.root}>
       <HtmlHead
         title={postData.title.rendered}
         description={strippedHtmlExcerpt}
@@ -142,7 +150,7 @@ const Post: NextPage<{
         }
       />
 
-      <article className={styles.root}>
+      <article>
         <CoverImage />
         <h1>{postData.title.rendered}</h1>
         <div className={styles['head-bottom']}>
@@ -153,7 +161,9 @@ const Post: NextPage<{
           <>{processor.processSync(htmlPostData).result}</>
         </main>
       </article>
-    </>
+
+      <SideNav categories={categories} />
+    </div>
   )
 }
 

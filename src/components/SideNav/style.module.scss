@@ -1,0 +1,73 @@
+@use 'styles/variables' as *;
+
+.root {
+  margin-top: 56px;
+  width: 100%;
+  @include responsive(md) {
+    margin-top: 0;
+    margin-left: 56px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 56px;
+    width: 160px;
+  }
+
+  > h1 {
+    @include headline6;
+    margin-top: 0;
+  }
+
+  > ul {
+    list-style: none;
+    padding: 0;
+    margin-top: -16px;
+
+    > .category-list {
+      display: block;
+
+      a {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        > h2 {
+          @include subtitle1;
+          margin: 0 8px 0 0;
+        }
+        > .count {
+          display: flex;
+          align-items: center;
+          color: $text_black60;
+          > svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+          }
+          > p {
+            @include caption;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  > hr {
+    border: none;
+    border-top: solid 1px $border_black;
+  }
+
+  > .portfolio {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    color: $text_black60;
+
+    > p {
+      margin: 0 8px 0 0;
+    }
+    > svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

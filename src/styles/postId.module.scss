@@ -1,211 +1,223 @@
 @use 'styles/variables' as *;
 
 .root {
-  > h1 {
-    @include headline4;
-    margin: 24px auto;
+  @include responsive(md) {
+    display: flex;
+    align-items: flex-start;
+  }
 
+  > article {
+    width: 100%;
     @include responsive(md) {
-      @include headline3;
-      margin: 40px auto;
+      width: calc(100% - 160px - 56px);
     }
-  }
 
-  > .head-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: solid 2px $border_black;
-    padding-bottom: 8px;
-  }
-}
+    > h1 {
+      @include headline4;
+      margin: 24px auto;
 
-.featured-image {
-  width: calc(100% + 40px);
-  margin-left: -20px;
-
-  > img {
-    width: 100%;
-    height: auto;
-  }
-
-  @include responsive(sm) {
-    width: 100%;
-    margin-left: 0;
-  }
-}
-
-.article-body {
-  @include article_body2;
-  margin: 48px auto;
-
-  p {
-    margin: 0 auto 32px auto;
-    word-break: break-word;
-
-    > code {
-      @include article_code2;
-      color: $ui_secondary40;
-      background: $background90;
-      padding: 2px 8px;
-      border-radius: 4px;
+      @include responsive(md) {
+        @include headline3;
+        margin: 40px auto;
+      }
     }
-  }
 
-  a {
-    word-break: break-all;
-  }
-
-  h2 {
-    @include headline5;
-    position: relative;
-    margin: 96px auto 24px auto;
-    &::before {
-      content: '';
-      display: block;
-      width: 56px;
-      height: 4px;
-      margin-bottom: 16px;
-      background: $text_black20;
+    > .head-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: solid 2px $border_black;
+      padding-bottom: 8px;
     }
-  }
 
-  h3 {
-    @include headline6;
-    margin: 64px auto 24px auto;
-  }
+    > .featured-image {
+      width: calc(100% + 40px);
+      margin-left: -20px;
 
-  h4 {
-    @include headline6;
-    font-weight: 400;
-    margin: 56px auto 24px auto;
-  }
+      > img {
+        width: 100%;
+        height: auto;
+      }
 
-  hr {
-    border-color: $border_black;
-    margin: 40px auto;
-  }
-
-  blockquote {
-    border-left: solid 2px;
-    color: $text_black60;
-    font-style: italic;
-    margin: 40px auto;
-    padding: 0 24px;
-  }
-
-  figure {
-    margin: 40px auto;
-    padding: 0;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    display: flex;
-    > img {
-      width: 100%;
-      height: auto;
+      @include responsive(sm) {
+        width: 100%;
+        margin-left: 0;
+      }
     }
-  }
 
-  pre {
-    margin: 40px auto;
-    position: relative;
-    > code {
-      @include article_code2;
-      padding: 20px;
-      border-radius: 4px;
-      &[class*='language'] {
+    > .article-body {
+      @include article_body2;
+      margin: 48px auto;
+
+      p {
+        margin: 0 auto 32px auto;
+        word-break: break-word;
+
+        > code {
+          @include article_code2;
+          color: $ui_secondary40;
+          background: $background90;
+          padding: 2px 8px;
+          border-radius: 4px;
+        }
+      }
+
+      a {
+        word-break: break-all;
+      }
+
+      h2 {
+        @include headline5;
+        position: relative;
+        margin: 96px auto 24px auto;
         &::before {
           content: '';
-          position: absolute;
-          top: 8px;
-          right: 16px;
-          font-size: 12px;
-          opacity: 0.4;
+          display: block;
+          width: 56px;
+          height: 4px;
+          margin-bottom: 16px;
+          background: $text_black20;
         }
       }
-      &[class*='typescript'] {
-        &::before {
-          content: 'TypeScript';
-        }
-      }
-      &[class*='bash'] {
-        &::before {
-          content: 'Bash';
-        }
-      }
-      &[class*='javascrip'] {
-        &::before {
-          content: 'JavaScript';
-        }
-      }
-      &[class*='html'] {
-        &::before {
-          content: 'HTML';
-        }
-      }
-      &[class*='css'] {
-        &::before {
-          content: 'CSS';
-        }
-      }
-      &[class*='sass'] {
-        &::before {
-          content: 'Sass';
-        }
-      }
-      &[class*='json'] {
-        &::before {
-          content: 'JSON';
-        }
-      }
-      &[class*='php'] {
-        &::before {
-          content: 'PHP';
-        }
-      }
-      &[class*='jsx'] {
-        &::before {
-          content: 'JSX';
-        }
-      }
-    }
-  }
 
-  @include responsive(md) {
-    @include article_body1;
-    margin: 56px auto;
-
-    p {
-      margin: 0 auto 32px auto;
-      > code {
-        @include article_code1;
+      h3 {
+        @include headline6;
+        margin: 64px auto 24px auto;
       }
-    }
 
-    a {
-      word-break: break-all;
-    }
+      h4 {
+        @include headline6;
+        font-weight: 400;
+        margin: 56px auto 24px auto;
+      }
 
-    h2 {
-      @include headline4;
-      margin: 112px auto 32px auto;
-    }
+      hr {
+        border-color: $border_black;
+        margin: 40px auto;
+      }
 
-    h3 {
-      @include headline5;
-      margin: 64px auto 32px auto;
-    }
+      blockquote {
+        border-left: solid 2px;
+        color: $text_black60;
+        font-style: italic;
+        margin: 40px auto;
+        padding: 0 24px;
+      }
 
-    h4 {
-      @include headline6;
-      margin: 56px auto 32px auto;
-    }
+      figure {
+        margin: 40px auto;
+        padding: 0;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        display: flex;
+        > img {
+          width: 100%;
+          height: auto;
+        }
+      }
 
-    pre {
-      > code {
-        @include article_code1;
-        padding: 24px;
+      pre {
+        margin: 40px auto;
+        position: relative;
+        > code {
+          @include article_code2;
+          padding: 20px;
+          border-radius: 4px;
+          &[class*='language'] {
+            &::before {
+              content: '';
+              position: absolute;
+              top: 8px;
+              right: 16px;
+              font-size: 12px;
+              opacity: 0.4;
+            }
+          }
+          &[class*='typescript'] {
+            &::before {
+              content: 'TypeScript';
+            }
+          }
+          &[class*='bash'] {
+            &::before {
+              content: 'Bash';
+            }
+          }
+          &[class*='javascrip'] {
+            &::before {
+              content: 'JavaScript';
+            }
+          }
+          &[class*='html'] {
+            &::before {
+              content: 'HTML';
+            }
+          }
+          &[class*='css'] {
+            &::before {
+              content: 'CSS';
+            }
+          }
+          &[class*='sass'] {
+            &::before {
+              content: 'Sass';
+            }
+          }
+          &[class*='json'] {
+            &::before {
+              content: 'JSON';
+            }
+          }
+          &[class*='php'] {
+            &::before {
+              content: 'PHP';
+            }
+          }
+          &[class*='jsx'] {
+            &::before {
+              content: 'JSX';
+            }
+          }
+        }
+      }
+
+      @include responsive(md) {
+        @include article_body1;
+        margin: 56px auto;
+
+        p {
+          margin: 0 auto 32px auto;
+          > code {
+            @include article_code1;
+          }
+        }
+
+        a {
+          word-break: break-all;
+        }
+
+        h2 {
+          @include headline4;
+          margin: 112px auto 32px auto;
+        }
+
+        h3 {
+          @include headline5;
+          margin: 64px auto 32px auto;
+        }
+
+        h4 {
+          @include headline6;
+          margin: 56px auto 32px auto;
+        }
+
+        pre {
+          > code {
+            @include article_code1;
+            padding: 24px;
+          }
+        }
       }
     }
   }

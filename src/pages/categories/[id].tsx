@@ -1,10 +1,14 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { WP_REST_API_Category, WP_REST_API_Posts } from 'wp-types'
+import {
+  WP_REST_API_Category,
+  WP_REST_API_Categories,
+  WP_REST_API_Posts,
+} from 'wp-types'
 //
 import { getCategories, getCategory, getCategoryPosts } from 'lib/api'
 import { PostCard } from 'components/PostCard'
+import { SideNav } from 'components/SideNav'
 import styles from 'styles/categoryId.module.scss'
-import ArticleIcon from 'assets/svg/description.svg'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const categories = getCategories()
@@ -22,11 +26,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const categoryId = Number(params?.id)
   const categoryData = await getCategory(categoryId)
   const posts = await getCategoryPosts(categoryId)
+  const categories = await getCategories()
 
   return {
     props: {
       categoryData,
       posts,
+      categories,
     },
     revalidate: 1,
   }
@@ -35,28 +41,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 const Category: NextPage<{
   categoryData: WP_REST_API_Category
   posts: WP_REST_API_Posts
-}> = ({ categoryData, posts }) => {
+  categories: WP_REST_API_Categories
+}> = ({ categoryData, posts, categories }) => {
   return (
     <div className={styles.root}>
-      <div className={styles.head}>
-        <h1>Category: {categoryData.name}</h1>
-        <div>
-          <ArticleIcon title="記事数" />
-          <p>{categoryData.count}</p>
+      <section>
+        <div className={styles.head}>
+          <h1>Category: {categoryData.name}</h1>
         </div>
-      </div>
-      <ul className={styles.posts}>
-        {posts.map(({ id, title, excerpt, date }) => (
-          <li key={id}>
-            <PostCard
-              href={`/posts/${id}`}
-              title={title.rendered}
-              excerpt={excerpt.rendered}
-              date={date}
-            />
-          </li>
-        ))}
-      </ul>
+        <ul className={styles.posts}>
+          {posts.map(({ id, title, excerpt, date }) => (
+            <li key={id}>
+              <PostCard
+                href={`/posts/${id}`}
+                title={title.rendered}
+                excerpt={excerpt.rendered}
+                date={date}
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+      <SideNav categories={categories} />
     </div>
   )
 }

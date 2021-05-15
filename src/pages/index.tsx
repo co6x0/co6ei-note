@@ -1,13 +1,11 @@
 import { GetStaticProps, NextPage } from 'next'
-import Link from 'next/link'
-// import DOMPurify from 'isomorphic-dompurify'
-import type { WP_REST_API_Posts, WP_REST_API_Categories } from 'wp-types'
+import { WP_REST_API_Posts, WP_REST_API_Categories } from 'wp-types'
 //
 import { getPosts, getCategories } from 'lib/api'
 import styles from 'styles/home.module.scss'
 import { HtmlHead } from 'components/HtmlHead'
 import { PostCard } from 'components/PostCard'
-import ArticleIcon from 'assets/svg/description.svg'
+import { SideNav } from 'components/SideNav'
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getPosts()
@@ -46,27 +44,7 @@ const Home: NextPage<{
             </li>
           ))}
         </ul>
-        <nav>
-          <h1>Blog Categories</h1>
-          <ul>
-            {/* 親カテゴリーを持たない最上位のカテゴリーのみ取得 */}
-            {categories
-              .filter((category) => category.parent === 0)
-              .map(({ id, name, count }) => (
-                <li className={styles['category-list']} key={id}>
-                  <Link href={`/categories/${id}`}>
-                    <a>
-                      <h2>{name}</h2>
-                      <div className={styles.count}>
-                        <ArticleIcon title="記事数" />
-                        <p>{count}</p>
-                      </div>
-                    </a>
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </nav>
+        <SideNav categories={categories} />
       </section>
     </>
   )
