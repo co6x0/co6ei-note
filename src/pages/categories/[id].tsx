@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { useRouter } from 'next/router'
 import {
   WP_REST_API_Category,
   WP_REST_API_Categories,
@@ -43,11 +44,16 @@ const Category: NextPage<{
   posts: WP_REST_API_Posts
   categories: WP_REST_API_Categories
 }> = ({ categoryData, posts, categories }) => {
+  const router = useRouter()
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className={styles.root}>
       <section>
         <div className={styles.head}>
-          <h1>Category: {categoryData?.name}</h1>
+          <h1>Category: {categoryData.name}</h1>
         </div>
         <ul className={styles.posts}>
           {posts.map(({ id, title, excerpt, date }) => (
