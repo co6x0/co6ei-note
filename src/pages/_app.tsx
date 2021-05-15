@@ -6,10 +6,12 @@ import { Footer } from 'components/Footer'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={styles.root}>
+    <div className={styles.root}>
       <Header />
-      <Component {...pageProps} />
+      <main>
+        <Component {...pageProps} />
+      </main>
       <Footer />
-    </main>
+    </div>
   )
 }

@@ -8,7 +8,13 @@ export const Footer: React.VFC = () => {
   return (
     <footer className={styles.root}>
       <div className={styles.cat}>
-        <Image src="/images/signyan.png" width="88" height="140" alt="猫" />
+        <Image
+          src="/images/signyan.png"
+          width="88"
+          height="140"
+          priority={true}
+          alt="猫"
+        />
       </div>
       <div className={styles.links}>
         <div>
@@ -34,7 +40,7 @@ export const Footer: React.VFC = () => {
             <IconGitHub title="GitHub" />
           </a>
         </div>
-        <small>Copyright © Nao Komura</small>
+        <small>Copyright © 2019– Nao Komura</small>
       </div>
     </footer>
   )

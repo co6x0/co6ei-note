@@ -1,0 +1,21 @@
+@use 'styles/variables' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  border-bottom: solid 1px $border_black;
+  padding-bottom: 16px;
+
+  > em {
+    @include headline6;
+    font-style: normal;
+    color: $ui_primary40;
+  }
+  > p {
+    @include body2;
+  }
+  > time {
+    @include body2;
+  }
+}

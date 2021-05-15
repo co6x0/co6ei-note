@@ -1,0 +1,36 @@
+@use 'styles/variables' as *;
+
+.root {
+  > .head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+
+    > h1 {
+      @include headline5;
+      margin: 0 16px 0 0;
+    }
+    > div {
+      display: flex;
+      align-items: center;
+      color: $text_black60;
+      > svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+      }
+      > p {
+        @include body1;
+        margin: 0;
+      }
+    }
+  }
+
+  > .posts {
+    list-style: none;
+    padding: 0;
+    > li {
+      margin-bottom: 24px;
+    }
+  }
+}

@@ -16,6 +16,12 @@ body {
 a {
   color: $ui_primary40;
   text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.3s ease;
+  &:hover {
+    text-decoration: none !important;
+    opacity: 0.7;
+    transform: translateY(2px);
+  }
 }
 
 a:hover {

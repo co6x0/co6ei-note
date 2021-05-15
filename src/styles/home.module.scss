@@ -1,37 +1,64 @@
 @use 'styles/variables' as *;
 
 .root {
-  > h1 {
-    @include headline3;
+  @include responsive(md) {
+    display: flex;
+    align-items: flex-start;
   }
 
   > ul {
     list-style: none;
     padding: 0;
+    > li {
+      margin-bottom: 24px;
+    }
+  }
 
-    > .article-list {
-      display: block;
-      border-bottom: solid 1px $border_black;
-      padding-bottom: 16px;
-      margin-bottom: 16px;
+  > nav {
+    margin-top: 56px;
+    @include responsive(md) {
+      margin-top: 0;
+      margin-left: 40px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 40px;
+    }
 
-      a {
-        color: inherit;
+    > h1 {
+      @include headline6;
+      margin-top: 0;
+    }
+
+    > ul {
+      list-style: none;
+      padding: 0;
+
+      > .category-list {
         display: block;
-        &:hover {
-          text-decoration: none;
-          opacity: 0.6;
+
+        a {
+          display: flex;
+          align-items: center;
+          padding: 12px 0;
+          > h2 {
+            @include subtitle1;
+            margin: 0 8px 0 0;
+          }
+          > .count {
+            display: flex;
+            align-items: center;
+            color: $text_black60;
+            > svg {
+              width: 16px;
+              height: 16px;
+              margin-right: 4px;
+            }
+            > p {
+              @include caption;
+              margin: 0;
+            }
+          }
         }
-      }
-      h2 {
-        @include headline6;
-        color: $ui_primary40;
-      }
-      div {
-        @include body2;
-      }
-      time {
-        @include body2;
       }
     }
   }

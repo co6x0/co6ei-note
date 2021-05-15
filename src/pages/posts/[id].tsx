@@ -9,7 +9,7 @@ import rehypeReact from 'rehype-react'
 const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
-import type { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
+import { WP_REST_API_Post, WP_REST_API_Attachment } from 'wp-types'
 //
 import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'

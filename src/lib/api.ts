@@ -3,6 +3,8 @@ import type {
   WP_REST_API_Posts,
   WP_REST_API_Post,
   WP_REST_API_Attachment,
+  WP_REST_API_Categories,
+  WP_REST_API_Category,
 } from 'wp-types'
 
 const wp = new WPAPI({
@@ -41,4 +43,38 @@ export const getMedia = async (id: number) => {
       throw new Error(error)
     })
   return media
+}
+
+export const getCategories = async () => {
+  const categories: WP_REST_API_Categories = await wp
+    .categories()
+    .perPage(20)
+    .get()
+    .catch((error) => {
+      throw new Error(error)
+    })
+  return categories
+}
+
+export const getCategory = async (id: number) => {
+  const category: WP_REST_API_Category = await wp
+    .categories()
+    .id(id)
+    .get()
+    .catch((error) => {
+      throw new Error(error)
+    })
+  return category
+}
+
+export const getCategoryPosts = async (id: number) => {
+  const posts: WP_REST_API_Posts = await wp
+    .posts()
+    .param('categories', id)
+    .perPage(20)
+    .get()
+    .catch((error) => {
+      throw new Error(error)
+    })
+  return posts
 }
