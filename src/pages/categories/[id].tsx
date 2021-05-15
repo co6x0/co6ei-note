@@ -47,7 +47,7 @@ const Category: NextPage<{
     <div className={styles.root}>
       <section>
         <div className={styles.head}>
-          <h1>Category: {categoryData.name}</h1>
+          <h1>Category: {categoryData?.name}</h1>
         </div>
         <ul className={styles.posts}>
           {posts.map(({ id, title, excerpt, date }) => (
