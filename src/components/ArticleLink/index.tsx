@@ -21,6 +21,7 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
   const splitBaseUrl = (href: string) => href.replace(cmsUrl, '')
 
   // CMSのURLの場合はサイト内リンクを使用する
+  // todo: ブログ本体のURLの場合の処理も追加する（localhostでは本番と異なる挙動になるのでそこも注意）
   if (href.startsWith(cmsUrl))
     return (
       <Link href={splitBaseUrl(href)}>
@@ -49,6 +50,16 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
   const { data, error } = useSWR(href, fetcher)
   if (error) return <></>
   if (!data) return <LoadingSpinner />
+  const formatImageUrl = (imageUrl: string) => {
+    console.log(imageUrl)
+    if (imageUrl.startsWith('//')) {
+      return 'https:' + imageUrl
+    }
+    if (imageUrl.startsWith('/')) {
+      return '/images/no-link-image.png'
+    }
+    return imageUrl
+  }
 
   return (
     <a
@@ -58,7 +69,13 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
       rel="noopener noreferrer"
     >
       {data.image && (
-        <img src={data.image} alt="" width="168" height="90" loading="lazy" />
+        <img
+          src={formatImageUrl(data.image)}
+          alt=""
+          width="168"
+          height="90"
+          loading="lazy"
+        />
       )}
       <span>
         <span className={styles.title}>{data.title ?? data.originTitle}</span>

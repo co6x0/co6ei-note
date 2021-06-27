@@ -38,7 +38,7 @@ export const ShareButtons: React.VFC<Props> = ({ title, path }) => {
       </button>
 
       <Toaster
-        position="bottom-center"
+        position="top-center"
         toastOptions={{
           style: {
             margin: '40px',
