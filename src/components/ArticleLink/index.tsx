@@ -51,7 +51,6 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
   if (error) return <></>
   if (!data) return <LoadingSpinner />
   const formatImageUrl = (imageUrl: string) => {
-    console.log(imageUrl)
     if (imageUrl.startsWith('//')) {
       return 'https:' + imageUrl
     }
