@@ -58,7 +58,7 @@ export const getServerSideProps = async ({
           return `
             <url>
               <loc>${baseUrl}/posts/${post.id}</loc>
-              <lastmod>${post.modified}</lastmod>
+              <lastmod>${new Date(post.modified).toISOString()}</lastmod>
               <changefreq>yearly</changefreq>
               <priority>1.0</priority>
             </url>
