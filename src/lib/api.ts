@@ -15,7 +15,7 @@ const wp = new WPAPI({
 export const getPosts = async () => {
   const posts: WP_REST_API_Posts = await wp
     .posts()
-    .perPage(20)
+    .perPage(50)
     .get()
     .catch((error) => {
       throw new Error(error)
@@ -48,7 +48,7 @@ export const getMedia = async (id: number) => {
 export const getCategories = async () => {
   const categories: WP_REST_API_Categories = await wp
     .categories()
-    .perPage(20)
+    .perPage(50)
     .get()
     .catch((error) => {
       throw new Error(error)
@@ -71,7 +71,7 @@ export const getCategoryPosts = async (id: number) => {
   const posts: WP_REST_API_Posts = await wp
     .posts()
     .param('categories', id)
-    .perPage(20)
+    .perPage(50)
     .get()
     .catch((error) => {
       throw new Error(error)

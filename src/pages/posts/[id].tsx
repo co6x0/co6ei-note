@@ -84,23 +84,16 @@ const Post: NextPage<{
     })
 
   const CoverImage = () => {
+    type ImageProps = {
+      source_url: string
+      width: number
+      height: number
+    }
     type MediaDetailsProps = {
       sizes: {
-        full: {
-          source_url: string
-          width: number
-          height: number
-        }
-        large: {
-          source_url: string
-          width: number
-          height: number
-        }
-        medium_large: {
-          source_url: string
-          width: number
-          height: number
-        }
+        full: ImageProps
+        large: ImageProps
+        medium_large: ImageProps
       }
     }
 
