@@ -49,7 +49,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       featuredImage,
       categories,
     },
-    revalidate: 1,
   }
 }
 

@@ -15,7 +15,6 @@ export const getStaticProps = async () => {
       postExcerpts,
       categories,
     },
-    revalidate: 1,
   }
 }
 
