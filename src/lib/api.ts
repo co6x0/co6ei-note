@@ -12,6 +12,27 @@ const wp = new WPAPI({
     'https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN + '/wp-json'
   ),
 })
+
+export const getPostExcerpts = async () => {
+  const posts: WP_REST_API_Posts = await wp
+    .posts()
+    .perPage(50)
+    .get()
+    .catch((error) => {
+      throw new Error(error)
+    })
+
+  const postExcerpts = posts.map((post) => {
+    return {
+      id: post.id,
+      title: post.title.rendered,
+      excerpt: post.excerpt.rendered,
+      date: post.date,
+    }
+  })
+  return postExcerpts
+}
+
 export const getPosts = async () => {
   const posts: WP_REST_API_Posts = await wp
     .posts()

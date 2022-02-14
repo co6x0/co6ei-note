@@ -1,28 +1,25 @@
-import { GetStaticProps, NextPage } from 'next'
-import { WP_REST_API_Posts, WP_REST_API_Categories } from 'wp-types'
-//
-import { getPosts, getCategories } from 'lib/api'
+import { getPostExcerpts, getCategories } from 'lib/api'
 import styles from 'styles/home.module.scss'
 import { HtmlHead } from 'components/HtmlHead'
 import { PostCard } from 'components/PostCard'
 import { SideNav } from 'components/SideNav'
+import type { NextPage, InferGetStaticPropsType } from 'next'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const posts = await getPosts()
+type Props = InferGetStaticPropsType<typeof getStaticProps>
+
+export const getStaticProps = async () => {
+  const postExcerpts = await getPostExcerpts()
   const categories = await getCategories()
   return {
     props: {
-      posts,
+      postExcerpts,
       categories,
     },
     revalidate: 1,
   }
 }
 
-const Home: NextPage<{
-  posts: WP_REST_API_Posts
-  categories: WP_REST_API_Categories
-}> = ({ posts, categories }) => {
+const Home: NextPage<Props> = ({ postExcerpts, categories }) => {
   return (
     <>
       <HtmlHead
@@ -33,12 +30,12 @@ const Home: NextPage<{
 
       <section className={styles.root}>
         <ul>
-          {posts.map(({ id, title, excerpt, date }) => (
+          {postExcerpts.map(({ id, title, excerpt, date }) => (
             <li key={id}>
               <PostCard
                 href={`/posts/${id}`}
-                title={title.rendered}
-                excerpt={excerpt.rendered}
+                title={title}
+                excerpt={excerpt}
                 date={date}
               />
             </li>
