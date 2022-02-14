@@ -2,8 +2,7 @@ import Link from 'next/link'
 import type { WP_REST_API_Categories } from 'wp-types'
 //
 import styles from './style.module.scss'
-import ArticleIcon from 'assets/svg/description.svg'
-import OpenIcon from 'assets/svg/openinnew.svg'
+import { IconDescription, IconOpenInNew } from 'assets/svg-components'
 
 type Props = {
   categories: WP_REST_API_Categories
@@ -22,7 +21,7 @@ export const SideNav: React.VFC<Props> = ({ categories }) => {
                 <a>
                   <h2>{name}</h2>
                   <div className={styles.count}>
-                    <ArticleIcon title="記事数" />
+                    <IconDescription title="記事数" />
                     <p>{count}</p>
                   </div>
                 </a>
@@ -35,7 +34,7 @@ export const SideNav: React.VFC<Props> = ({ categories }) => {
 
       <a href="https://unify.sixaxd.com" className={styles.portfolio}>
         <p>Portfolio</p>
-        <OpenIcon title="外部サイトへアクセス" />
+        <IconOpenInNew title="外部サイトへアクセス" />
       </a>
     </nav>
   )

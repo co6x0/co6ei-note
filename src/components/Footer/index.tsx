@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import styles from './style.module.scss'
-import IconGitHub from 'assets/svg/github.svg'
-import IconNote from 'assets/svg/note.svg'
-import IconTwitter from 'assets/svg/twitter.svg'
+import { IconGitHub, IconNote, IconTwitter } from 'assets/svg-components'
 
 export const Footer: React.VFC = () => {
   return (
@@ -40,7 +38,7 @@ export const Footer: React.VFC = () => {
             <IconGitHub title="GitHub" />
           </a>
         </div>
-        <small>Copyright © 2019– Nao Komura</small>
+        <small>Copyright © 2019&mdash; Nao Komura</small>
       </div>
     </footer>
   )

@@ -114,6 +114,7 @@ const Post: NextPage<{
 
     return (
       <div className={styles['featured-image']}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           sizes="(max-width: 600px) 600px, 720px"
           srcSet={`

@@ -1,7 +1,6 @@
 import { Toaster, toast } from 'react-hot-toast'
 import { share } from 'utils/share'
-import IconTwitter from 'assets/svg/twitter-solid.svg'
-import IconShare from 'assets/svg/share.svg'
+import { IconTwitterSolid, IconShare } from 'assets/svg-components'
 import styles from './style.module.scss'
 
 type Props = {
@@ -31,7 +30,7 @@ export const ShareButtons: React.VFC<Props> = ({ title, path }) => {
         rel="noopener noreferrer"
         aria-label="記事をTwitterで共有"
       >
-        <IconTwitter title="記事をTwitterで共有" />
+        <IconTwitterSolid title="記事をTwitterで共有" />
       </a>
       <button onClick={handleClick} aria-label="記事を共有する">
         <IconShare title="記事を共有する" />
