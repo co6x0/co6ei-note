@@ -20,6 +20,20 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
   const cmsUrl = String('https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN)
   const splitBaseUrl = (href: string) => href.replace(cmsUrl, '')
 
+  // 外部URLがそのまま設定されている場合はOGPから情報を取得して表示する
+  const fetcher = async (href: string): Promise<ResOgp> => {
+    try {
+      const response = await fetch(`/api/getOgp?url=${href}`)
+      return response.json()
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(`unknown error: ${error}`)
+    }
+  }
+  const { data, error } = useSWR(href, fetcher)
+
   // CMSのURLの場合はサイト内リンクを使用する
   // todo: ブログ本体のURLの場合の処理も追加する（localhostでは本番と異なる挙動になるのでそこも注意）
   if (href.startsWith(cmsUrl))
@@ -37,17 +51,6 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
       </a>
     )
 
-  // 外部URLがそのまま設定されている場合はOGPから情報を取得して表示する
-  const fetcher = async (href: string): Promise<ResOgp> => {
-    try {
-      const response = await fetch(`/api/getOgp?url=${href}`)
-      return response.json()
-    } catch (error) {
-      throw new Error(error)
-    }
-  }
-
-  const { data, error } = useSWR(href, fetcher)
   if (error) return <></>
   if (!data) return <LoadingSpinner />
   const formatImageUrl = (imageUrl: string) => {
@@ -68,6 +71,7 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
       rel="noopener noreferrer"
     >
       {data.image && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={formatImageUrl(data.image)}
           alt=""
