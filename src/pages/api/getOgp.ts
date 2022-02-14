@@ -5,6 +5,7 @@ import { JSDOM } from 'jsdom'
 // todo: 毎回処理が走ってしまうのでデータをどこかに保存したい
 // todo: OgImageが相対パスで指定されている時エラーになってしまう
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req: VercelRequest, res: VercelResponse) {
   const url = getUrlParameter(req)
   if (!url) {
@@ -25,6 +26,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     }
     const ogp = extractOgp([...meta])
     const values = Object.assign(originTitle, ogp)
+    res.setHeader('Cache-Control', 's-maxage=86400')
     res.status(200).json(values)
   } catch (e) {
     errorResponse(res)
