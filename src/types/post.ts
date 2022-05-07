@@ -3,6 +3,8 @@ type PostType = {
   title: string
   date: string
   content: string
+  tags?: string[]
+  categories?: string[]
   coverImage?: string
   excerpt?: string
   ogImage?: {
@@ -10,4 +12,4 @@ type PostType = {
   }
 }
 
-export default PostType
+export type { PostType }

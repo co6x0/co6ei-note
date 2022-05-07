@@ -1,5 +1,5 @@
 import { getPostExcerpts, getCategories } from 'lib/wpApi'
-import { getPostSlugs } from 'lib/api'
+import { getPostSlugs, getPostBySlug } from 'lib/api'
 import styles from 'styles/home.module.scss'
 import { HtmlHead } from 'components/HtmlHead'
 import { PostCard } from 'components/PostCard'
@@ -10,6 +10,13 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticProps = async () => {
   const slugs = getPostSlugs()
+  const postData = getPostBySlug(slugs[0], [
+    'slug',
+    'title',
+    'categories',
+    'tags',
+    'content',
+  ])
 
   const postExcerpts = await getPostExcerpts()
   const categories = await getCategories()
@@ -18,11 +25,19 @@ export const getStaticProps = async () => {
       postExcerpts,
       categories,
       slugs,
+      postData,
     },
   }
 }
 
-const ApiTest: NextPage<Props> = ({ postExcerpts, categories, slugs }) => {
+const ApiTest: NextPage<Props> = ({
+  postExcerpts,
+  categories,
+  slugs,
+  postData,
+}) => {
+  console.log(postData)
+
   return (
     <>
       <HtmlHead
