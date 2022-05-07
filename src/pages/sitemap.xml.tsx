@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { getPosts, getCategories } from 'lib/api'
+import { getPosts, getCategories } from 'lib/wpApi'
 import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({

@@ -6,7 +6,7 @@ import {
   WP_REST_API_Posts,
 } from 'wp-types'
 //
-import { getCategories, getCategory, getCategoryPosts } from 'lib/api'
+import { getCategories, getCategory, getCategoryPosts } from 'lib/wpApi'
 import { PostCard } from 'components/PostCard'
 import { SideNav } from 'components/SideNav'
 import styles from 'styles/categoryId.module.scss'

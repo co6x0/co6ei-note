@@ -1,4 +1,5 @@
 import { getPostExcerpts, getCategories } from 'lib/wpApi'
+import { getPostSlugs } from 'lib/api'
 import styles from 'styles/home.module.scss'
 import { HtmlHead } from 'components/HtmlHead'
 import { PostCard } from 'components/PostCard'
@@ -8,17 +9,20 @@ import type { NextPage, InferGetStaticPropsType } from 'next'
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticProps = async () => {
+  const slugs = getPostSlugs()
+
   const postExcerpts = await getPostExcerpts()
   const categories = await getCategories()
   return {
     props: {
       postExcerpts,
       categories,
+      slugs,
     },
   }
 }
 
-const Home: NextPage<Props> = ({ postExcerpts, categories }) => {
+const ApiTest: NextPage<Props> = ({ postExcerpts, categories, slugs }) => {
   return (
     <>
       <HtmlHead
@@ -32,7 +36,7 @@ const Home: NextPage<Props> = ({ postExcerpts, categories }) => {
           {postExcerpts.map(({ id, title, excerpt, date }) => (
             <li key={id}>
               <PostCard
-                href={`/posts/${id}`}
+                href={`/posts/${slugs[0]}`}
                 title={title}
                 excerpt={excerpt}
                 date={date}
@@ -45,4 +49,4 @@ const Home: NextPage<Props> = ({ postExcerpts, categories }) => {
     </>
   )
 }
-export default Home
+export default ApiTest

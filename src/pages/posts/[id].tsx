@@ -19,7 +19,7 @@ import { ArticleLink } from 'components/ArticleLink'
 import { ShareButtons } from 'components/ShareButtons'
 import { SideNav } from 'components/SideNav'
 import { PostDate } from 'components/PostDate'
-import { getPosts, getPost, getMedia, getCategories } from 'lib/api'
+import { getPosts, getPost, getMedia, getCategories } from 'lib/wpApi'
 import styles from 'styles/postId.module.scss'
 
 export const getStaticPaths: GetStaticPaths = async () => {

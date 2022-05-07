@@ -1,101 +1,54 @@
-import WPAPI from 'wpapi'
-import type {
-  WP_REST_API_Posts,
-  WP_REST_API_Post,
-  WP_REST_API_Attachment,
-  WP_REST_API_Categories,
-  WP_REST_API_Category,
-} from 'wp-types'
+/**
+ * original source: https://github.com/vercel/next.js/blob/canary/examples/blog-starter-typescript/lib/api.ts
+ */
+import fs from 'fs'
+import { join } from 'path'
+import matter from 'gray-matter'
 
-const wp = new WPAPI({
-  endpoint: String(
-    'https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN + '/wp-json'
-  ),
-})
+const postsDirectory = join(process.cwd(), 'src', '_posts')
 
-export const getPostExcerpts = async () => {
-  const posts: WP_REST_API_Posts = await wp
-    .posts()
-    .perPage(50)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
+/**
+ * _postsディレクトリ内のMarkdownからフォルダ名(YYYY-MM-DD)を得る
+ */
+export const getPostSlugs = () => {
+  console.log(postsDirectory)
+  return fs.readdirSync(postsDirectory)
+}
 
-  const postExcerpts = posts.map((post) => {
-    return {
-      id: post.id,
-      title: post.title.rendered,
-      excerpt: post.excerpt.rendered,
-      date: post.date,
+export function getPostBySlug(slug: string, fields: string[] = []) {
+  const realSlug = slug.replace(/\.md$/, '')
+  const fullPath = join(postsDirectory, `${realSlug}.md`)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
+
+  type Items = {
+    [key: string]: string
+  }
+
+  const items: Items = {}
+
+  // Ensure only the minimal needed data is exposed
+  fields.forEach((field) => {
+    if (field === 'slug') {
+      items[field] = realSlug
+    }
+    if (field === 'content') {
+      items[field] = content
+    }
+
+    if (typeof data[field] !== 'undefined') {
+      items[field] = data[field]
     }
   })
-  return postExcerpts
+
+  return items
 }
 
-export const getPosts = async () => {
-  const posts: WP_REST_API_Posts = await wp
-    .posts()
-    .perPage(50)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
-  return posts
-}
-
-export const getPost = async (id: number) => {
-  const post: WP_REST_API_Post = await wp
-    .posts()
-    .id(id)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
-  return post
-}
-
-export const getMedia = async (id: number) => {
-  const media: WP_REST_API_Attachment = await wp
-    .media()
-    .id(id)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
-  return media
-}
-
-export const getCategories = async () => {
-  const categories: WP_REST_API_Categories = await wp
-    .categories()
-    .perPage(50)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
-  return categories
-}
-
-export const getCategory = async (id: number) => {
-  const category: WP_REST_API_Category = await wp
-    .categories()
-    .id(id)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
-  return category
-}
-
-export const getCategoryPosts = async (id: number) => {
-  const posts: WP_REST_API_Posts = await wp
-    .posts()
-    .param('categories', id)
-    .perPage(50)
-    .get()
-    .catch((error) => {
-      throw new Error(error)
-    })
+export function getAllPosts(fields: string[] = []) {
+  const slugs = getPostSlugs()
+  const posts = slugs
+    .map((slug) => getPostBySlug(slug, fields))
+    // sort posts by date in descending order
+    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1))
   return posts
 }
