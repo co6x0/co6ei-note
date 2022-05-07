@@ -4,7 +4,7 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-import type { PostType } from 'types/post'
+import type { Post } from 'types/post'
 
 const postsDirectory = join(process.cwd(), 'src', '_posts')
 
@@ -17,14 +17,14 @@ export const getPostSlugs = () => {
   return fs.readdirSync(postsDirectory)
 }
 
-type Items = {
-  [key in keyof PostType]: string
-}
-
+/**
+ * @param slug getPostSlugs()から得た配列の内のひとつ
+ * @param fields Postのoptionalなプロパティを列挙する配列
+ */
 export const getPostBySlug = (
   slug: string,
-  fields: (keyof PostType)[] = []
-): Items | null => {
+  fields: (keyof Omit<Post, 'slug' | 'title' | 'date' | 'content'>)[] = []
+): Post | null => {
   const fullPath = join(postsDirectory, slug, 'index.md')
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const { data, content } = matter(fileContents)
@@ -35,7 +35,7 @@ export const getPostBySlug = (
   }
   if (!hasRequiredKeys(data)) return null
 
-  const items: Items = {
+  const post: Post = {
     slug: slug,
     title: data.title,
     date: data.date,
@@ -44,10 +44,10 @@ export const getPostBySlug = (
 
   for (const field of fields) {
     if (!data.hasOwnProperty(field)) continue
-    items[field] = data[field]
+    post[field] = data[field]
   }
 
-  return items
+  return post
 }
 
 export function getAllPosts(fields: string[] = []) {

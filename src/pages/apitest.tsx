@@ -10,13 +10,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticProps = async () => {
   const slugs = getPostSlugs()
-  const postData = getPostBySlug(slugs[0], [
-    'slug',
-    'title',
-    'categories',
-    'tags',
-    'content',
-  ])
+  const postData = getPostBySlug(slugs[0], ['excerpt'])
 
   const postExcerpts = await getPostExcerpts()
   const categories = await getCategories()
