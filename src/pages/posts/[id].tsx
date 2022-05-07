@@ -2,7 +2,6 @@ import { createElement } from 'react'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 //
-import dayjs from 'dayjs'
 import unified from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeReact from 'rehype-react'
@@ -19,6 +18,7 @@ import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'
 import { ShareButtons } from 'components/ShareButtons'
 import { SideNav } from 'components/SideNav'
+import { PostDate } from 'components/PostDate'
 import { getPosts, getPost, getMedia, getCategories } from 'lib/api'
 import styles from 'styles/postId.module.scss'
 
@@ -60,10 +60,6 @@ const Post: NextPage<{
   const router = useRouter()
   if (router.isFallback) {
     return <div>Loading...</div>
-  }
-
-  const convertDate = (dateString: string) => {
-    return dayjs(dateString).format('YYYY-MM-DD')
   }
 
   const strippedHtmlExcerpt = postData.excerpt.rendered
@@ -147,7 +143,7 @@ const Post: NextPage<{
         <CoverImage />
         <h1>{postData.title.rendered}</h1>
         <div className={styles['head-bottom']}>
-          <time>{convertDate(postData.date)}</time>
+          <PostDate dateString={postData.date} />
           <ShareButtons title={postData.title.rendered} path={router.asPath} />
         </div>
         <main className={styles['article-body']}>

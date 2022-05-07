@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import dayjs from 'dayjs'
 import styles from './style.module.scss'
+import { PostDate } from 'components/PostDate'
 
 type Props = {
   href: string
@@ -10,9 +10,6 @@ type Props = {
 }
 
 export const PostCard: React.VFC<Props> = (props) => {
-  const convertDate = (dateString: string) => {
-    return dayjs(dateString).format('YYYY-MM-DD')
-  }
   const removeHtmlTag = (text: string) => {
     return text.replace(/(<([^>]+)>)/gi, '').replace('[&hellip;]', '…')
   }
@@ -22,7 +19,7 @@ export const PostCard: React.VFC<Props> = (props) => {
       <a className={styles.root}>
         <em>{props.title}</em>
         <p>{removeHtmlTag(props.excerpt)}</p>
-        <time>{convertDate(props.date)}</time>
+        <PostDate dateString={props.date} />
       </a>
     </Link>
   )
