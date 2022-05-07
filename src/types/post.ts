@@ -3,10 +3,10 @@ type Post = {
   title: string
   date: string
   content: string
+  excerpt: string
   tags?: string[]
   categories?: string[]
   coverImage?: string
-  excerpt?: string
   ogImage?: {
     url: string
   }
