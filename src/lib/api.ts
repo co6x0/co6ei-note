@@ -7,8 +7,8 @@ import matter from 'gray-matter'
 import dayjs from 'dayjs'
 import type { Post } from 'types/post'
 
-type PostFields = [keyof Post, ...(keyof Post)[]]
-type ResultGetPost<T extends PostFields> = { [P in T[number]]: Post[P] }
+export type PostFields = readonly [keyof Post, ...(keyof Post)[]]
+export type ResultGetPost<T extends PostFields> = { [P in T[number]]: Post[P] }
 
 const postsDirectory = join(process.cwd(), 'src', '_posts')
 /**

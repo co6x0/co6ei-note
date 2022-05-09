@@ -1,5 +1,4 @@
 import { createElement } from 'react'
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 //
 import unified from 'unified'
@@ -8,66 +7,89 @@ import rehypeReact from 'rehype-react'
 const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
-import {
-  WP_REST_API_Post,
-  WP_REST_API_Attachment,
-  WP_REST_API_Categories,
-} from 'wp-types'
-//
+import { getPostSlugs, getPostBySlug } from 'lib/api'
 import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'
 import { ShareButtons } from 'components/ShareButtons'
 import { SideNav } from 'components/SideNav'
 import { PostDate } from 'components/PostDate'
-import { getPosts, getPost, getMedia, getCategories } from 'lib/wpApi'
 import styles from 'styles/postId.module.scss'
+//
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  NextPage,
+  InferGetStaticPropsType,
+} from 'next'
+import type { ResultGetPost } from 'lib/api'
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = getPosts()
-  const paths = (await posts).map(({ id }) => {
-    return { params: { id: String(id) } }
+  const paths = getPostSlugs().map((slug) => {
+    return { params: { id: slug } }
   })
 
   return {
     paths,
-    fallback: true,
+    fallback: false,
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postId = Number(params?.id)
-  const postData = await getPost(postId)
-  const categories = await getCategories()
+// 本来であればgetStaticPropsの返す型は`InferGetStaticPropsType<typeof getStaticProps>`で推論できると思われるが、
+// 推論に任せると{[key: string]: any}を返してくるので、postFieldsに記事に必要なプロパティをまとめて、これをResultGetPostに渡した型をGetStaticPropsに教えている
+/**
+ * @field (keyof Post)[]
+ */
+const postFields = [
+  'title',
+  'excerpt',
+  'date',
+  'categories',
+  'tags',
+  'coverImage',
+  'slug',
+  'content',
+] as const
 
-  const featuredImage = postData.featured_media
-    ? await getMedia(postData.featured_media)
-    : null
+export const getStaticProps: GetStaticProps<{
+  postData: ResultGetPost<typeof postFields>
+}> = async ({ params }) => {
+  if (params?.id === undefined) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const postId = String(params.id)
+  const postData = getPostBySlug(postId, postFields)
+
+  if (postData === undefined) {
+    return {
+      notFound: true,
+    }
+  }
+
+  // TODO:
+  // if ('移行前のブログの記事IDなら') {
+  //   return {
+  //     redirect: {
+  //       destination: `/${'新しい記事のID'}`,
+  //       permanent: true
+  //     }
+  //   }
+  // }
 
   return {
     props: {
       postData,
-      featuredImage,
-      categories,
     },
   }
 }
 
-const Post: NextPage<{
-  postData: WP_REST_API_Post
-  featuredImage: WP_REST_API_Attachment | null
-  categories: WP_REST_API_Categories
-}> = ({ postData, featuredImage, categories }) => {
+const Post: NextPage<Props> = ({ postData }) => {
   const router = useRouter()
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  }
-
-  const strippedHtmlExcerpt = postData.excerpt.rendered
-    .replace(/(<([^>]+)>)/gi, '')
-    .replace(/\r?\n/g, '')
-    .replace('[&hellip;]', '…')
-
-  const htmlPostData = DOMPurify.sanitize(postData.content.rendered)
+  const htmlPostData = DOMPurify.sanitize(postData.content)
   const processor = unified()
     .use(rehypeParse, { fragment: true })
     .use(rehypeHighlight)
@@ -78,80 +100,32 @@ const Post: NextPage<{
       },
     })
 
-  const CoverImage = () => {
-    type ImageProps = {
-      source_url: string
-      width: number
-      height: number
-    }
-    type MediaDetailsProps = {
-      sizes: {
-        full: ImageProps
-        large: ImageProps
-        medium_large: ImageProps
-      }
-    }
-
-    if (!featuredImage) return <></>
-
-    const mediaDetails = featuredImage.media_details as MediaDetailsProps
-    const getFormatImage = (size: 'full' | 'large' | 'medium_large') => {
-      return {
-        source_url: mediaDetails.sizes[size].source_url,
-        width: mediaDetails.sizes[size].width,
-        height: mediaDetails.sizes[size].height,
-      }
-    }
-
-    const imageFull = getFormatImage('full')
-    const imageLarge = getFormatImage('large')
-    const imageMedium = getFormatImage('medium_large')
-
-    return (
-      <div className={styles['featured-image']}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          sizes="(max-width: 600px) 600px, 720px"
-          srcSet={`
-            ${imageFull.source_url} ${imageFull.width}w,
-            ${imageLarge.source_url} ${imageLarge.width}w,
-            ${imageMedium.source_url} ${imageMedium.width}w
-          `}
-          src={imageFull.source_url}
-          width={imageFull.width}
-          height={imageFull.height}
-          alt={`${postData.title.rendered}のアイキャッチ画像`}
-        />
-      </div>
-    )
-  }
-
   return (
     <div className={styles.root}>
       <HtmlHead
-        title={postData.title.rendered}
-        description={strippedHtmlExcerpt}
+        title={postData.title}
+        description={postData.excerpt}
         path={router.asPath}
-        imageSrc={
-          featuredImage
-            ? featuredImage.guid.rendered
-            : `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}/images/default-cover-image.png`
-        }
+        // imageSrc={
+        //   featuredImage
+        //     ? featuredImage.guid.rendered
+        //     : `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}/images/default-cover-image.png`
+        // }
       />
 
       <article>
-        <CoverImage />
-        <h1>{postData.title.rendered}</h1>
+        {/* <CoverImage /> */}
+        <h1>{postData.title}</h1>
         <div className={styles['head-bottom']}>
           <PostDate dateString={postData.date} />
-          <ShareButtons title={postData.title.rendered} path={router.asPath} />
+          <ShareButtons title={postData.title} path={router.asPath} />
         </div>
         <main className={styles['article-body']}>
           <>{processor.processSync(htmlPostData).result}</>
         </main>
       </article>
 
-      <SideNav categories={categories} />
+      {/* <SideNav categories={categories} /> */}
     </div>
   )
 }
