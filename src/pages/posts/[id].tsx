@@ -8,6 +8,7 @@ const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
 import { getPostSlugs, getPostBySlug } from 'lib/api'
+import { markdownToHtml } from 'lib/markdownToHtml'
 import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'
 import { ShareButtons } from 'components/ShareButtons'
@@ -54,6 +55,7 @@ const postFields = [
 
 export const getStaticProps: GetStaticProps<{
   postData: ResultGetPost<typeof postFields>
+  content: string
 }> = async ({ params }) => {
   if (params?.id === undefined) {
     return {
@@ -70,6 +72,8 @@ export const getStaticProps: GetStaticProps<{
     }
   }
 
+  const content = await markdownToHtml(postData.content)
+
   // TODO:
   // if ('移行前のブログの記事IDなら') {
   //   return {
@@ -83,13 +87,14 @@ export const getStaticProps: GetStaticProps<{
   return {
     props: {
       postData,
+      content,
     },
   }
 }
 
-const Post: NextPage<Props> = ({ postData }) => {
+const Post: NextPage<Props> = ({ postData, content }) => {
   const router = useRouter()
-  const htmlPostData = DOMPurify.sanitize(postData.content)
+  const htmlPostData = DOMPurify.sanitize(content)
   const processor = unified()
     .use(rehypeParse, { fragment: true })
     .use(rehypeHighlight)

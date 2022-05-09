@@ -67,6 +67,10 @@ export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
       post = { ...post, [field]: excerpt }
       continue
     }
+    if (field === 'content') {
+      post = { ...post, [field]: content }
+      continue
+    }
     if (data.hasOwnProperty(field)) {
       post = { ...post, [field]: data[field] }
       continue
