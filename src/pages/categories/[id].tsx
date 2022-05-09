@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
-import { getCategories, getCategory, getCategoryPosts } from 'lib/wpApi'
-import { getPostCategories } from 'lib/api'
+import { getPostCategories, getPostsByCategory } from 'lib/api'
 import { PostCard } from 'components/PostCard'
 import { SideNav } from 'components/SideNav'
 import styles from 'styles/categoryId.module.scss'
@@ -10,6 +9,7 @@ import type {
   NextPage,
   InferGetStaticPropsType,
 } from 'next'
+import type { ResultGetPost } from 'lib/api'
 import type { PostCategory } from 'types/post'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
@@ -20,17 +20,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return { params: { id: slug } }
   })
 
-  console.log(paths)
-
   return {
     paths,
     fallback: false,
   }
 }
 
+/** @field (keyof Post)[] */
+const postFields = ['title', 'excerpt', 'date', 'slug'] as const
+
 export const getStaticProps: GetStaticProps<{
   categories: PostCategory[]
   currentCategory: PostCategory
+  posts: ResultGetPost<typeof postFields>[]
 }> = async ({ params }) => {
   if (params?.id === undefined) {
     return {
@@ -49,43 +51,36 @@ export const getStaticProps: GetStaticProps<{
       notFound: true,
     }
   }
-  // const categoryData = await getCategory(categoryId)
-  // const posts = await getCategoryPosts(categoryId)
+  const posts = await getPostsByCategory(currentCategory.name, postFields)
 
   return {
     props: {
       categories,
       currentCategory,
-      // categoryData,
-      // posts,
+      posts,
     },
   }
 }
 
-const Category: NextPage<Props> = ({ categories, currentCategory }) => {
-  const router = useRouter()
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  }
-
+const Category: NextPage<Props> = ({ categories, currentCategory, posts }) => {
   return (
     <div className={styles.root}>
       <section>
         <div className={styles.head}>
           <h1>Category: {currentCategory.name}</h1>
         </div>
-        {/* <ul className={styles.posts}>
-          {posts.map(({ id, title, excerpt, date }) => (
-            <li key={id}>
+        <ul className={styles.posts}>
+          {posts.map(({ slug, title, excerpt, date }) => (
+            <li key={slug}>
               <PostCard
-                href={`/posts/${id}`}
-                title={title.rendered}
-                excerpt={excerpt.rendered}
+                href={`/posts/${slug}`}
+                title={title}
+                excerpt={excerpt}
                 date={date}
               />
             </li>
           ))}
-        </ul> */}
+        </ul>
       </section>
       <SideNav categories={categories} />
     </div>

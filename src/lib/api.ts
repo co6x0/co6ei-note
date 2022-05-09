@@ -5,6 +5,7 @@ import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
 import dayjs from 'dayjs'
+import { nonNullable } from 'utils/typeGuard'
 import type { Post, PostCategory } from 'types/post'
 
 export type PostFields = readonly [keyof Post, ...(keyof Post)[]]
@@ -23,14 +24,7 @@ export const getPostSlugs = () => {
   return slugs
 }
 
-/**
- * @param slug getPostSlugs()から得た配列の内のひとつ
- * @param fields 呼び出し元で必要なだけのPostのプロパティを列挙する配列
- */
-export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
-  slug: string,
-  fields: T
-): R | undefined => {
+const postSlugToDirectoryName = (slug: string) => {
   // 取り除かれたハイフンを再結合してディレクトリ名を導く
   if (slug.length !== 10) return undefined
   const directoryName = [
@@ -42,6 +36,19 @@ export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
     '-',
     slug.slice(8, 10),
   ].join('')
+  return directoryName
+}
+
+/**
+ * @param slug getPostSlugs()から得た配列の内のひとつ
+ * @param fields 呼び出し元で必要なだけのPostのプロパティを列挙する配列
+ */
+export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
+  slug: string,
+  fields: T
+): R | undefined => {
+  const directoryName = postSlugToDirectoryName(slug)
+  if (directoryName === undefined) return undefined
 
   const fullPath = join(postsDirectory, directoryName, 'index.md')
   const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -86,7 +93,7 @@ export const getAllPosts = <R extends ResultGetPost<T>, T extends PostFields>(
   const slugs = getPostSlugs()
   const posts = slugs
     .map((slug) => getPostBySlug(slug, fields))
-    .filter((post): post is NonNullable<typeof post> => post != undefined)
+    .filter(nonNullable)
 
   // dateプロパティを持つPostかを判別する型ガード
   const hasDateProperty = (
@@ -134,4 +141,29 @@ export const getPostCategories = (): PostCategory[] => {
     })
 
   return categories
+}
+
+export const getPostsByCategory = <
+  R extends ResultGetPost<T>,
+  T extends PostFields
+>(
+  name: string,
+  fields: T
+): R[] => {
+  const posts = getAllPosts(['categories', 'slug'])
+  const theCategoryIncludedPosts = posts
+    .map((post) => {
+      if (post.categories === undefined && name === 'Uncategorized') return post
+      if (post.categories === undefined) return undefined
+      if (post.categories.includes(name)) return post
+    })
+    .filter(nonNullable)
+
+  const requestedPosts = theCategoryIncludedPosts
+    .map((post) => {
+      return getPostBySlug(post.slug, fields)
+    })
+    .filter(nonNullable)
+
+  return requestedPosts as R[]
 }

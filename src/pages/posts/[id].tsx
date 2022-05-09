@@ -38,11 +38,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-// 本来であればgetStaticPropsの返す型は`InferGetStaticPropsType<typeof getStaticProps>`で推論できると思われるが、
-// 推論に任せると{[key: string]: any}を返してくるので、postFieldsに記事に必要なプロパティをまとめて、これをResultGetPostに渡した型をGetStaticPropsに教えている
-/**
- * @field (keyof Post)[]
- */
+/** @field (keyof Post)[] */
 const postFields = [
   'title',
   'excerpt',
