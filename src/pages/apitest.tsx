@@ -1,5 +1,5 @@
 import { getCategories } from 'lib/wpApi'
-import { getAllPosts } from 'lib/api'
+import { getAllPosts, getPostBySlug } from 'lib/api'
 import styles from 'styles/home.module.scss'
 import { HtmlHead } from 'components/HtmlHead'
 import { PostCard } from 'components/PostCard'
@@ -9,7 +9,7 @@ import type { NextPage, InferGetStaticPropsType } from 'next'
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticProps = async () => {
-  const posts = getAllPosts(['slug', 'title', 'excerpt', 'date'])
+  const posts = getAllPosts(['title', 'slug', 'excerpt', 'date'])
 
   const categories = await getCategories()
   return {
