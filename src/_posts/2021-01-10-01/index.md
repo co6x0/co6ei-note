@@ -2,7 +2,7 @@
 title: "去年よく聴いた音楽(2020)"
 date: "2021-01-10"
 categories: 
-  - "music"
+  - "Music"
 tags: 
   - "2020"
 ---

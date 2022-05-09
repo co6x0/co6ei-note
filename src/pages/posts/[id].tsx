@@ -7,7 +7,7 @@ import rehypeReact from 'rehype-react'
 const rehypeHighlight = require('rehype-highlight')
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
-import { getPostSlugs, getPostBySlug } from 'lib/api'
+import { getPostSlugs, getPostBySlug, getPostCategories } from 'lib/api'
 import { markdownToHtml } from 'lib/markdownToHtml'
 import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'
@@ -23,6 +23,7 @@ import type {
   InferGetStaticPropsType,
 } from 'next'
 import type { ResultGetPost } from 'lib/api'
+import type { PostCategory } from 'types/post'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -56,6 +57,7 @@ const postFields = [
 export const getStaticProps: GetStaticProps<{
   postData: ResultGetPost<typeof postFields>
   content: string
+  categories: PostCategory[]
 }> = async ({ params }) => {
   if (params?.id === undefined) {
     return {
@@ -65,6 +67,7 @@ export const getStaticProps: GetStaticProps<{
 
   const postId = String(params.id)
   const postData = getPostBySlug(postId, postFields)
+  const categories = getPostCategories()
 
   if (postData === undefined) {
     return {
@@ -88,11 +91,12 @@ export const getStaticProps: GetStaticProps<{
     props: {
       postData,
       content,
+      categories,
     },
   }
 }
 
-const Post: NextPage<Props> = ({ postData, content }) => {
+const Post: NextPage<Props> = ({ postData, content, categories }) => {
   const router = useRouter()
   const htmlPostData = DOMPurify.sanitize(content)
   const processor = unified()
@@ -130,7 +134,7 @@ const Post: NextPage<Props> = ({ postData, content }) => {
         </main>
       </article>
 
-      {/* <SideNav categories={categories} /> */}
+      <SideNav categories={categories} />
     </div>
   )
 }

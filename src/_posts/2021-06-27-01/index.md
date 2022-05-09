@@ -2,10 +2,10 @@
 title: "ブログをWordPress on GCE + Next.jsに移行してみての所感(主に費用について)"
 date: "2021-06-27"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "google-compute-engine"
-  - "wordpress"
+  - "Google Compute Engine"
+  - "WordPress"
 ---
 
 2ヶ月程前に本ブログをNetlifyにホスティングしたGatsbyから、GCE(Google Compute Engine)にホスティングしたWordPressをVercel上のNext.jsからWP REST APIを叩いて使う構成に移行してみました。その内容については前回の記事をどうぞ。

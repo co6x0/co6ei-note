@@ -1,5 +1,5 @@
 import { getCategories } from 'lib/wpApi'
-import { getAllPosts } from 'lib/api'
+import { getAllPosts, getPostCategories } from 'lib/api'
 import styles from 'styles/home.module.scss'
 import { HtmlHead } from 'components/HtmlHead'
 import { PostCard } from 'components/PostCard'
@@ -10,7 +10,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticProps = async () => {
   const posts = getAllPosts(['title', 'slug', 'excerpt', 'date'])
-  const categories = await getCategories()
+  const categories = getPostCategories()
 
   return {
     props: {

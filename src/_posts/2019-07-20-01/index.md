@@ -2,7 +2,10 @@
 title: "Vanilla JSのscroll Event最適化"
 date: "2019-07-20"
 categories: 
-  - "development"
+  - "Development"
+tags: 
+  - "JavaScript"
+  - "アニメーション"
 ---
 
 この記事がとても参考になる。この記事の内容を自分の理解のために少し噛み砕く。

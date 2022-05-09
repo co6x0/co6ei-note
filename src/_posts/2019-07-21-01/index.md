@@ -2,9 +2,9 @@
 title: "Nuxt.jsでのHello Worldと構造のチェック"
 date: "2019-07-21"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "nuxt-js"
+  - "Nuxt"
 ---
 
 ここの通りに進める。

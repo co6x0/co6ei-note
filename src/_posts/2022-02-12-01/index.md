@@ -2,11 +2,11 @@
 title: "デザイナー不在のプロダクト開発チームがデザインのためにできること [LT資料]"
 date: "2022-02-12"
 categories: 
-  - "design"
-  - "development"
+  - "Design"
+  - "Development"
 tags: 
-  - "ooui"
-  - "uiライブラリ"
+  - "OOUI"
+  - "UIライブラリ"
   - "アクセシビリティ"
   - "ユーザーリサーチ"
 coverImage: "Screen-Shot-2022-02-12-at-17.17.14.png"

@@ -12,4 +12,10 @@ type Post = {
   }
 }
 
-export type { Post }
+type PostCategory = {
+  name: string
+  slug: string
+  count: number
+}
+
+export type { Post, PostCategory }

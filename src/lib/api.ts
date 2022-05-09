@@ -5,7 +5,7 @@ import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
 import dayjs from 'dayjs'
-import type { Post } from 'types/post'
+import type { Post, PostCategory } from 'types/post'
 
 export type PostFields = readonly [keyof Post, ...(keyof Post)[]]
 export type ResultGetPost<T extends PostFields> = { [P in T[number]]: Post[P] }
@@ -105,4 +105,33 @@ export const getAllPosts = <R extends ResultGetPost<T>, T extends PostFields>(
   }
 
   return posts as R[]
+}
+
+export const getPostCategories = (): PostCategory[] => {
+  const posts = getAllPosts(['categories'])
+  const duplicatedCategories = posts.flatMap((post) => {
+    return post.categories
+  })
+  // 重複をなくし一意なカテゴリーのみを残す
+  const categoryNames = [...new Set(duplicatedCategories)]
+
+  const categories = categoryNames
+    .map((category) => {
+      const sameNameCategories = duplicatedCategories.filter((dCategory) => {
+        return dCategory === category
+      })
+
+      const name = category === undefined ? 'Uncategorized' : category
+      return {
+        name: name,
+        // 日本語カテゴリーをエンコードしてもブラウザ側でデコードされてしまいgetStaticPathsのpathsと合致しないため、やむをえずエンコード後の文字列から'%'を省いている
+        slug: encodeURI(name.toLowerCase()).replace(/%/g, ''),
+        count: sameNameCategories.length,
+      }
+    })
+    .sort((A, B) => {
+      return A.count > B.count ? -1 : 1
+    })
+
+  return categories
 }

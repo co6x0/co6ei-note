@@ -2,10 +2,10 @@
 title: "対話形式のUIをマークアップするのに相応しいHTMLタグは何か"
 date: "2019-07-15"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "accessibility"
-  - "html"
+  - "Accessibility"
+  - "HTML"
 ---
 
 Nao : よーし最強のUIを作ってやるぞー‼︎ Komura : うん頑張ろう！

@@ -2,10 +2,10 @@
 title: "GatsbyとNetlify CMSで既存サイトにブログを構築するまでのメモ"
 date: "2019-07-15"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "gatsby"
-  - "netlify-cms"
+  - "Gatsby"
+  - "Netlify CMS"
 ---
 
 Gatsbyのチュートリアルを終え、NetlifyでGatsbyのチュートリアルサイトをDeployするところまで体験した後の流れをメモっておく。

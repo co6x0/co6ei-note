@@ -2,9 +2,9 @@
 title: "Nuxt.jsの開発環境を整える"
 date: "2019-07-21"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "nuxt-js"
+  - "Nuxt"
 ---
 
 * * *

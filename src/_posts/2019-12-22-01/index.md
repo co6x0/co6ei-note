@@ -2,9 +2,9 @@
 title: "パララックス-2 | ピュアなJavaScriptでインタラクティブなアニメーションを自前で実装したい Vol.2"
 date: "2019-12-22"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "javascript"
+  - "JavaScript"
   - "アニメーション"
   - "インタラクション"
   - "パララックス"

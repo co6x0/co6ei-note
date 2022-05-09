@@ -2,11 +2,11 @@
 title: "Netlify CMS + GatsbyJSで開発環境と本番環境を切り替える"
 date: "2020-02-17"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "gatsby"
-  - "netlify"
-  - "netlifycms"
+  - "Gatsby"
+  - "Netlify"
+  - "Netlify CMS"
 coverImage: "NetlifyCMSGatsbyJSDividedEnv.png"
 ---
 

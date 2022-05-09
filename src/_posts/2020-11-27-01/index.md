@@ -2,12 +2,12 @@
 title: "Cloud Functions for Firebaseを使ってLINE botを作る(with Cloud Firestore)"
 date: "2020-11-27"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "cloud-firestore"
-  - "cloud-functions"
-  - "firebase"
-  - "line-messaging-api"
+  - "Google Cloud Firestore"
+  - "Google Cloud Functions"
+  - "Firebase"
+  - "LINE Messaging API"
 coverImage: "ogimage.png"
 ---
 

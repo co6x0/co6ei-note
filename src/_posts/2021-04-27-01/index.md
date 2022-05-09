@@ -2,12 +2,12 @@
 title: "WordPress on Google Compute EngineのREST APIからNext.jsでブログを構築する"
 date: "2021-04-27"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "google-compute-engine"
-  - "next-js"
-  - "typescript"
-  - "wordpress"
+  - "Google Compute Engine"
+  - "Next.js"
+  - "TypeScript"
+  - "WordPress"
 ---
 
 WordPressくんは僕がWebの仕事を始めたての頃それはもう大変お世話になった（苦汁も大量になめさせていただいた）CMSみたいなフレームワークみたいなソフトウェアで、当時はWebサイト制作といったら大抵はWordPressを使用していたように思います。

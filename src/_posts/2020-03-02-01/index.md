@@ -2,14 +2,14 @@
 title: "M3-2020春 購入した音源と簡単なレビュー"
 date: "2020-03-02"
 categories: 
-  - "music"
+  - "Music"
 tags: 
-  - "ambient"
-  - "celtic"
-  - "dream-pop"
-  - "electronica"
-  - "game-music"
-  - "m3"
+  - "Ambient"
+  - "Celtic"
+  - "Dream Pop"
+  - "Electronica"
+  - "Game Music"
+  - "M3"
 ---
 
 巷ではコロナウイルスが原因で様々なイベントが中止になっておりましたが、対策を講じた上で予定通り開催されたM3-2020春。僕は実際に会場まで足を運びましたが、特に混乱した様子もなく普段通りスムーズに開催されていたような気がします。人も少なくて快適でした。（サークル側からするとたまったものではなさそうですが……。）

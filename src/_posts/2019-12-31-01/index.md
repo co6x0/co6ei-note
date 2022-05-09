@@ -2,11 +2,11 @@
 title: "去年よく聴いた音楽(2019)"
 date: "2019-12-31"
 categories: 
-  - "music"
+  - "Music"
 tags: 
-  - "emo"
-  - "hardcore"
-  - "metal"
+  - "Emo"
+  - "Hardcore"
+  - "Metal"
 ---
 
 世間的に売れていたとかそういうのは全く関係なく、自分が好きでよく聴いていた2019年発売のアルバムからなので重めな曲が多いです。

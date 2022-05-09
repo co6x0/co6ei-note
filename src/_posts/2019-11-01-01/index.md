@@ -2,9 +2,9 @@
 title: "ミニゲームアプリUIを制作するにあたってのメモ"
 date: "2019-11-01"
 categories: 
-  - "design"
+  - "Design"
 tags: 
-  - "ui"
+  - "UI"
   - "ゲームデザイン"
 ---
 

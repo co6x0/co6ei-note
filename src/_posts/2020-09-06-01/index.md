@@ -2,13 +2,13 @@
 title: "Figma Webhooksを使ってVersion HistoryをSlackに通知する"
 date: "2020-09-06"
 categories: 
-  - "development"
+  - "Development"
 tags: 
-  - "api-gateway"
-  - "aws"
-  - "figma"
-  - "lambda"
-  - "slack"
+  - "Amazon API Gateway"
+  - "AWS"
+  - "Figma"
+  - "Amazon Lambda"
+  - "Slack"
 coverImage: "cover.png"
 ---
 
