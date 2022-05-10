@@ -11,20 +11,6 @@ export const getStaticProps = async () => {
   const posts = getAllPosts(['title', 'slug', 'excerpt', 'date'])
   const categories = getPostCategories()
 
-  // const _posts = await getPosts()
-  // const postIdentities = _posts.map((oldPost) => {
-  //   const thePost = posts.find(
-  //     (currentPost) => currentPost.title === oldPost.title.rendered
-  //   )
-  //   // console.log(thePost)
-  //   return {
-  //     oldSlug: String(oldPost.id),
-  //     newSlug: thePost?.slug,
-  //   }
-  // })
-
-  // console.log(postIdentities)
-
   return {
     props: {
       posts,

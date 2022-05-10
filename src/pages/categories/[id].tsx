@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { getPostCategories, getPostsByCategory } from 'lib/api'
 import { PostCard } from 'components/PostCard'
 import { SideNav } from 'components/SideNav'

@@ -1,10 +1,10 @@
 import { createElement } from 'react'
 import { useRouter } from 'next/router'
 //
-import unified from 'unified'
+import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeReact from 'rehype-react'
-const rehypeHighlight = require('rehype-highlight')
+import rehypeHighlight from 'rehype-highlight'
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
 import { getPostSlugs, getPostBySlug, getPostCategories } from 'lib/api'
