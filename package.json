@@ -1,5 +1,5 @@
 {
-  "name": "next-wordpress",
+  "name": "co6ei-note",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "gray-matter": "^4.0.3",
     "isomorphic-dompurify": "^0.13.0",
     "jsdom": "^16.5.3",
-    "next": "^12.0.10",
+    "next": "^12.1.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-toast": "^1.0.2",
@@ -35,7 +35,7 @@
     "@types/wpapi": "^1.1.1",
     "@vercel/node": "^1.10.0",
     "eslint": "8.9.0",
-    "eslint-config-next": "12.0.10",
+    "eslint-config-next": "^12.1.6",
     "typescript": "^4.3.4",
     "wp-types": "^2.12.0"
   }
