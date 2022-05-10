@@ -5,6 +5,7 @@ import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
 import dayjs from 'dayjs'
+import { hasProperty } from 'utils'
 import { nonNullable } from 'utils/typeGuard'
 import type { Post, PostCategory } from 'types/post'
 
@@ -55,8 +56,8 @@ export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
   const { data, content } = matter(fileContents)
 
   // ブログポストであるmarkdownファイルにtype Postのrequiredなプロパティが存在するか確認し、存在しなければundefinedを返す
-  const hasRequiredKeys = (data: Record<string, any>) => {
-    return data.hasOwnProperty('title') && data.hasOwnProperty('date')
+  const hasRequiredKeys = (data: Record<string, unknown>) => {
+    return hasProperty(data, 'title') && hasProperty(data, 'date')
   }
   if (!hasRequiredKeys(data)) return undefined
 
@@ -78,7 +79,7 @@ export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
       post = { ...post, [field]: content }
       continue
     }
-    if (data.hasOwnProperty(field)) {
+    if (hasProperty(data, field)) {
       post = { ...post, [field]: data[field] }
       continue
     }
@@ -99,7 +100,7 @@ export const getAllPosts = <R extends ResultGetPost<T>, T extends PostFields>(
   const hasDateProperty = (
     posts: NonNullable<ResultGetPost<T>>[]
   ): posts is NonNullable<ResultGetPost<T> & { date: string }>[] => {
-    return posts.every((post) => post.hasOwnProperty('date'))
+    return posts.every((post) => hasProperty(post, 'date'))
   }
 
   if (fields.includes('date') && hasDateProperty(posts)) {

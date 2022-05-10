@@ -1,6 +1,5 @@
-import { createElement } from 'react'
+import { Children, createElement } from 'react'
 import { useRouter } from 'next/router'
-//
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeReact from 'rehype-react'
@@ -15,7 +14,6 @@ import { ShareButtons } from 'components/ShareButtons'
 import { SideNav } from 'components/SideNav'
 import { PostDate } from 'components/PostDate'
 import styles from 'styles/postId.module.scss'
-//
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -70,18 +68,7 @@ export const getStaticProps: GetStaticProps<{
       notFound: true,
     }
   }
-
   const content = await markdownToHtml(postData.content)
-
-  // TODO:
-  // if ('移行前のブログの記事IDなら') {
-  //   return {
-  //     redirect: {
-  //       destination: `/${'新しい記事のID'}`,
-  //       permanent: true
-  //     }
-  //   }
-  // }
 
   return {
     props: {
@@ -98,10 +85,19 @@ const Post: NextPage<Props> = ({ postData, content, categories }) => {
   const processor = unified()
     .use(rehypeParse, { fragment: true })
     .use(rehypeHighlight)
+    // @ts-ignore: なぜかpropsの型にany/unknown以外を指定できない
     .use(rehypeReact, {
       createElement,
       components: {
-        a: (props: any) => <ArticleLink {...props} />,
+        a: (props: { href: string; children?: string[] }) => {
+          console.log(props)
+          return (
+            <ArticleLink
+              href={props.href}
+              text={props.children ? props.children[0] : undefined}
+            />
+          )
+        },
       },
     })
 

@@ -11,7 +11,7 @@ tags:
 
 ブログだったらISRじゃなくて、SSGに寄せても良いような気がするのでその場合は、以下のようなビルド時にサイトマップを生成するタイプのパッケージを使用するのが手っ取り早いです。
 
-[https://github.com/iamvishnusankar/next-sitemap](https://github.com/iamvishnusankar/next-sitemap)
+[](https://github.com/iamvishnusankar/next-sitemap)
 
 いやどうもこのパッケージは動的なサイトマップも一緒に生成できるようなので、サイトマップが複数個になることが許容できるようであれば全部それで済ませられるかも。Google Search Consoleよく分からないのですが、複数個登録できたりするんですかね。
 

@@ -6,7 +6,7 @@ import { LoadingSpinner } from 'components/LoadingSpinner'
 
 type Props = {
   href: string
-  children: string[] | undefined
+  text?: string
 }
 
 type ResOgp = {
@@ -16,7 +16,7 @@ type ResOgp = {
   description?: string
 }
 
-export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
+export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
   const cmsUrl = String('https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN)
   const splitBaseUrl = (href: string) => href.replace(cmsUrl, '')
 
@@ -39,15 +39,15 @@ export const ArticleLink: React.VFC<Props> = ({ href, children }) => {
   if (href.startsWith(cmsUrl))
     return (
       <Link href={splitBaseUrl(href)}>
-        <a>{children !== undefined ? children[0] : 'リンクタイトル未設定'}</a>
+        <a>{text !== undefined ? text[0] : 'リンクタイトル未設定'}</a>
       </Link>
     )
 
-  // childrenにhrefと異なるテキストが設定されている場合はテキストリンクを使用する
-  if (children !== undefined && children[0] !== href)
+  // textにhrefと異なるテキストが設定されている場合はテキストリンクを使用する
+  if (text !== undefined && text[0] !== href)
     return (
       <a href={href} target="_blank" rel="noopener noreferrer">
-        {children[0]}
+        {text[0]}
       </a>
     )
 
