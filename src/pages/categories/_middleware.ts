@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(req: NextRequest) {
-  console.log('Hello')
-
-  const response = NextResponse.next()
-
   const oldCategorySlugs = ['1', '2', '9', '16']
 
   // https://nextjs.org/docs/messages/middleware-relative-urls
@@ -15,8 +11,6 @@ export function middleware(req: NextRequest) {
     pathname.length
   )
   const isOldSlug = oldCategorySlugs.includes(categorySlug)
-
-  console.log(categorySlug, pathname)
 
   if (isOldSlug) {
     const convertCurrentPath = (oldSlug: string) => {
@@ -36,6 +30,4 @@ export function middleware(req: NextRequest) {
     url.pathname = convertCurrentPath(categorySlug)
     return NextResponse.redirect(url, 308)
   }
-
-  return response
 }
