@@ -1,15 +1,13 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { JSDOM } from 'jsdom'
 
-// todo: 毎回処理が走ってしまうのでデータをどこかに保存したい
 // todo: OgImageが相対パスで指定されている時エラーになってしまう
-
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req: VercelRequest, res: VercelResponse) {
   const url = getUrlParameter(req)
   if (!url) {
-    errorResponse(res)
+    errorResponse(res, 400, 'Error')
     return
   }
 
@@ -26,10 +24,20 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     }
     const ogp = extractOgp([...meta])
     const values = Object.assign(originTitle, ogp)
-    res.setHeader('Cache-Control', 's-maxage=86400')
+    // 604800秒 = 7日
+    res.setHeader('Cache-Control', 's-maxage=604800')
     res.status(200).json(values)
   } catch (e) {
-    errorResponse(res)
+    const error = e as AxiosError
+    if (error.isAxiosError) {
+      errorResponse(
+        res,
+        error.response?.status ?? 400,
+        error.response?.statusText ?? 'Unknown Error'
+      )
+    } else {
+      errorResponse(res, 400, 'Unknown Error')
+    }
   }
 }
 
@@ -62,6 +70,11 @@ function getUrlParameter(req: VercelRequest): string | null {
   return null
 }
 
-function errorResponse(res: VercelResponse): void {
-  res.status(400).send('error')
+function errorResponse(
+  res: VercelResponse,
+  status: number,
+  message: string
+): void {
+  res.setHeader('Cache-Control', 's-maxage=604800')
+  res.status(status).json({ code: status, message: message })
 }

@@ -12,17 +12,17 @@ export default function App({ Component, pageProps }: AppProps) {
       {process.env.NODE_ENV === 'production' && (
         <>
           <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-WDHKSVZ0B1"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GTAG_ID}`}
             strategy="afterInteractive"
           />
           <Script id="google-analytics" strategy="afterInteractive">
             {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', 'G-WDHKSVZ0B1');
-        `}
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            
+              gtag('config', '${process.env.NEXT_PUBLIC_GTAG_ID}');
+            `}
           </Script>
         </>
       )}

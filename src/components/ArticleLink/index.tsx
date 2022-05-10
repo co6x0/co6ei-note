@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import useSWR from 'swr'
-//
+import classnames from 'classnames'
 import styles from './style.module.scss'
 import { LoadingSpinner } from 'components/LoadingSpinner'
 
@@ -17,42 +17,51 @@ type ResOgp = {
 }
 
 export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
-  const cmsUrl = String('https://' + process.env.NEXT_PUBLIC_CMS_DOMAIN)
-  const splitBaseUrl = (href: string) => href.replace(cmsUrl, '')
-
-  // 外部URLがそのまま設定されている場合はOGPから情報を取得して表示する
   const fetcher = async (href: string): Promise<ResOgp> => {
-    try {
-      const response = await fetch(`/api/getOgp?url=${href}`)
-      return response.json()
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message)
-      }
-      throw new Error(`unknown error: ${error}`)
+    const response = await fetch(`/api/getOgp?url=${href}`)
+
+    if (!response.ok) {
+      const error: Error & { info?: Promise<any>; status?: number } = new Error(
+        'An error occurred while fetching the data.'
+      )
+      error.info = await response.json()
+      error.status = response.status
+      throw error
     }
+
+    return response.json()
   }
   const { data, error } = useSWR(href, fetcher)
 
-  // CMSのURLの場合はサイト内リンクを使用する
-  // todo: ブログ本体のURLの場合の処理も追加する（localhostでは本番と異なる挙動になるのでそこも注意）
-  if (href.startsWith(cmsUrl))
-    return (
-      <Link href={splitBaseUrl(href)}>
-        <a>{text !== undefined ? text[0] : 'リンクタイトル未設定'}</a>
-      </Link>
-    )
-
   // textにhrefと異なるテキストが設定されている場合はテキストリンクを使用する
-  if (text !== undefined && text[0] !== href)
+  if (text !== undefined && text !== href) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer">
-        {text[0]}
+        {text}
       </a>
     )
+  }
 
-  if (error) return <></>
+  if (error) {
+    return (
+      <a
+        href={href}
+        className={classnames(styles.card, styles['-error'])}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>
+          <span className={styles.title}>{href}</span>
+          <span className={styles.desc}>データが取得できませんでした</span>
+          <span
+            className={styles.url}
+          >{`${error.info.code}: ${error.info.message}`}</span>
+        </span>
+      </a>
+    )
+  }
   if (!data) return <LoadingSpinner />
+
   const formatImageUrl = (imageUrl: string) => {
     if (imageUrl.startsWith('//')) {
       return 'https:' + imageUrl
@@ -63,7 +72,35 @@ export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
     return imageUrl
   }
 
-  return (
+  // 当ブログのURLの場合はサイト内リンクを使用する
+  const siteUrl = `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}`
+  const splitBaseUrl = (href: string) => href.replace(siteUrl, '')
+
+  return href.startsWith(siteUrl) ? (
+    <Link href={splitBaseUrl(href)}>
+      <a className={styles.card}>
+        {data.image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={formatImageUrl(data.image)}
+            alt=""
+            width="168"
+            height="90"
+            loading="lazy"
+          />
+        )}
+        <span>
+          <span className={styles.title}>
+            {data.title !== undefined && data.title.length !== 0
+              ? data.title
+              : data.originTitle}
+          </span>
+          <span className={styles.desc}>{data.description ?? ''}</span>
+          <span className={styles.url}>{href}</span>
+        </span>
+      </a>
+    </Link>
+  ) : (
     <a
       href={href}
       className={styles.card}
@@ -81,7 +118,11 @@ export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
         />
       )}
       <span>
-        <span className={styles.title}>{data.title ?? data.originTitle}</span>
+        <span className={styles.title}>
+          {data.title !== undefined && data.title.length !== 0
+            ? data.title
+            : data.originTitle}
+        </span>
         <span className={styles.desc}>{data.description ?? ''}</span>
         <span className={styles.url}>{href}</span>
       </span>

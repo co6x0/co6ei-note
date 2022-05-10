@@ -9,7 +9,7 @@ tags:
 
 去年こんな記事を書いてからもう1年経ったようです。
 
-[My Best Albums 2019](https://sixaxd.com/blog/201912312012/)
+[](https://sixaxd.com/posts/73/)
 
 2020年は何を聴いていたかなと振り返っていると、この曲2020年のリリースだったのかと驚く場面も少なくなく、時の流れが早く……ではなく遅く感じるばかりです。去年は色々な事がありました。
 
@@ -28,8 +28,6 @@ tags:
 # 良かった作品たち
 
 [⭐ 犀礼 - Arise in Stability](https://www.amazon.co.jp/%E7%8A%80%E7%A4%BC-Dose-Again-Arise-Stability/dp/B084DFZRHJ)
-
-https://www.amazon.co.jp/%E7%8A%80%E7%A4%BC-Dose-Again-Arise-Stability/dp/B084DFZRHJ
 
 前作から更に洗練され、日本的なテクニカルデスメタルとしての一つの到達点を感じたアルバム
 

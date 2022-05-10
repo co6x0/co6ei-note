@@ -1,4 +1,4 @@
-import { Children, createElement } from 'react'
+import { createElement } from 'react'
 import { useRouter } from 'next/router'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
@@ -90,7 +90,6 @@ const Post: NextPage<Props> = ({ postData, content, categories }) => {
       createElement,
       components: {
         a: (props: { href: string; children?: string[] }) => {
-          console.log(props)
           return (
             <ArticleLink
               href={props.href}

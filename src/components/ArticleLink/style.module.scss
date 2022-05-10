@@ -47,6 +47,14 @@
     white-space: nowrap;
   }
 
+  &.-error {
+    background-color: $background90;
+    border: none;
+    .title {
+      color: $text_black60;
+    }
+  }
+
   @include responsive(sm) {
     flex-direction: row-reverse;
     justify-content: flex-end;
