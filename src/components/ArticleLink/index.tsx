@@ -60,7 +60,13 @@ export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
       </a>
     )
   }
-  if (!data) return <LoadingSpinner />
+  if (!data) {
+    return (
+      <div className={classnames(styles.card, styles['-loading'])}>
+        <LoadingSpinner />
+      </div>
+    )
+  }
 
   const formatImageUrl = (imageUrl: string) => {
     if (imageUrl.startsWith('//')) {
