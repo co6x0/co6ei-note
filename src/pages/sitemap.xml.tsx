@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { getPosts, getCategories } from 'lib/wpApi'
+import { getAllPosts, getPostCategories } from 'lib/api'
 import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({
@@ -32,8 +32,8 @@ export const getServerSideProps = async ({
     })
     .filter((page) => page) // undefinedを除外する
 
-  const posts = await getPosts()
-  const categories = await getCategories()
+  const posts = await getAllPosts(['slug', 'date'])
+  const categories = await getPostCategories()
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -57,8 +57,8 @@ export const getServerSideProps = async ({
         .map((post) => {
           return `
             <url>
-              <loc>${baseUrl}/posts/${post.id}</loc>
-              <lastmod>${new Date(post.modified).toISOString()}</lastmod>
+              <loc>${baseUrl}/posts/${post.slug}</loc>
+              <lastmod>${new Date(post.date).toISOString()}</lastmod>
               <changefreq>yearly</changefreq>
               <priority>1.0</priority>
             </url>
@@ -69,7 +69,7 @@ export const getServerSideProps = async ({
         .map((category) => {
           return `
               <url>
-                <loc>${baseUrl}/categories/${category.id}</loc>
+                <loc>${baseUrl}/categories/${category.slug}</loc>
                 <changefreq>monthly</changefreq>
                 <priority>0.5</priority>
               </url>

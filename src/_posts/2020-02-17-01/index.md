@@ -22,7 +22,6 @@ Netlify CMSで作成したマークダウンファイルを開発環境と本番
 
 Gatsbyはdotenvやdirenvなどのツールを自前で用意しなくても、Gatsby自体に最初からdotenvによる環境変数を切り替える仕組みが用意されていて、`gatsby develop`を実行すると`.env.development`が読み込まれ、`gatsby build`または`gatsby serve`を実行すると`.env.production`が読み込まれます。
 
-![](images/gatsby.jpg)
 
 ### Environment Variables
 
@@ -47,8 +46,6 @@ console.log(process.env.TEST)
 ```
 
 しかし、本番環境であるNetlify Hostingに(GitHubのリポジトリに)`.env.*`ファイルをアップロードするのはセキュリティの都合上望ましくありません。Netlify上に環境変数を設定して対応しましょう。
-
-![](images/meta-image.jpg)
 
 ### Build environment variables
 
@@ -180,8 +177,6 @@ options: {
 そして、`cms.js`内で環境によるbranchとfolderの切り替えとそれに伴う手動初期化を行います。
 
 ※ドキュメントには`config.yml`が存在するときは手動初期化で指定した設定はマージされると書いてあるのだけど、されないのでbranchとfolderを先ほどコメントアウトしています。
-
-![](images/gatsby.jpg)
 
 ### gatsby-plugin-netlify-cms
 
