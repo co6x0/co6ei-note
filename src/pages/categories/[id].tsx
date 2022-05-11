@@ -1,66 +1,80 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { useRouter } from 'next/router'
-import {
-  WP_REST_API_Category,
-  WP_REST_API_Categories,
-  WP_REST_API_Posts,
-} from 'wp-types'
-//
-import { getCategories, getCategory, getCategoryPosts } from 'lib/api'
+import { getPostCategories, getPostsByCategory } from 'lib/api'
 import { PostCard } from 'components/PostCard'
 import { SideNav } from 'components/SideNav'
 import styles from 'styles/categoryId.module.scss'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  NextPage,
+  InferGetStaticPropsType,
+} from 'next'
+import type { ResultGetPost } from 'lib/api'
+import type { PostCategory } from 'types/post'
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categories = getCategories()
-  const paths = (await categories).map(({ id }) => {
-    return { params: { id: String(id) } }
+  const categories = getPostCategories()
+  const paths = categories.map(({ slug }) => {
+    return { params: { id: slug } }
   })
 
   return {
     paths,
-    fallback: true,
+    fallback: false,
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const categoryId = Number(params?.id)
-  const categoryData = await getCategory(categoryId)
-  const posts = await getCategoryPosts(categoryId)
-  const categories = await getCategories()
+/** @field (keyof Post)[] */
+const postFields = ['title', 'excerpt', 'date', 'slug'] as const
+
+export const getStaticProps: GetStaticProps<{
+  categories: PostCategory[]
+  currentCategory: PostCategory
+  posts: ResultGetPost<typeof postFields>[]
+}> = async ({ params }) => {
+  if (params?.id === undefined) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const categories = getPostCategories()
+  const categorySlug = String(params.id)
+  const currentCategory = categories.find(
+    (category) => category.slug === categorySlug
+  )
+
+  if (currentCategory === undefined) {
+    return {
+      notFound: true,
+    }
+  }
+  const posts = await getPostsByCategory(currentCategory.name, postFields)
 
   return {
     props: {
-      categoryData,
-      posts,
       categories,
+      currentCategory,
+      posts,
     },
   }
 }
 
-const Category: NextPage<{
-  categoryData: WP_REST_API_Category
-  posts: WP_REST_API_Posts
-  categories: WP_REST_API_Categories
-}> = ({ categoryData, posts, categories }) => {
-  const router = useRouter()
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  }
-
+const Category: NextPage<Props> = ({ categories, currentCategory, posts }) => {
   return (
     <div className={styles.root}>
       <section>
         <div className={styles.head}>
-          <h1>Category: {categoryData.name}</h1>
+          <h1>Category: {currentCategory.name}</h1>
         </div>
         <ul className={styles.posts}>
-          {posts.map(({ id, title, excerpt, date }) => (
-            <li key={id}>
+          {posts.map(({ slug, title, excerpt, date }) => (
+            <li key={slug}>
               <PostCard
-                href={`/posts/${id}`}
-                title={title.rendered}
-                excerpt={excerpt.rendered}
+                href={`/posts/${slug}`}
+                title={title}
+                excerpt={excerpt}
                 date={date}
               />
             </li>

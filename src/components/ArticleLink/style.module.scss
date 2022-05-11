@@ -7,6 +7,7 @@
   border: solid 1px $border_black;
   border-radius: 4px;
   padding: 12px;
+  height: 140px;
 
   > img {
     width: 88px;
@@ -26,7 +27,11 @@
   .title {
     @include subtitle1;
     display: block;
+    display: -webkit-box;
+    overflow: hidden;
     margin-bottom: 8px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .desc {
     @include caption;
@@ -47,10 +52,23 @@
     white-space: nowrap;
   }
 
+  &.-error {
+    background-color: $background90;
+    border: none;
+    .title {
+      color: $text_black60;
+    }
+  }
+
+  &.-loading {
+    background-color: $background90;
+  }
+
   @include responsive(sm) {
     flex-direction: row-reverse;
     justify-content: flex-end;
     padding: 16px 20px;
+    height: 160px;
 
     > img {
       width: 168px;

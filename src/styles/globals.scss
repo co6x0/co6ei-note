@@ -38,14 +38,44 @@ ul {
 }
 
 // Table of Contents by WordPress Plugin
-#ez-toc-container {
-  background: #f8f8fa;
+.rehype-toc {
+  background: $background90;
   border-radius: 4px;
-  padding: 24px 24px 24px 8px;
-  margin: 48px auto;
+  padding: 16px 16px 16px 8px;
+  margin: 40px auto;
+
+  > ol {
+    margin: 0;
+    list-style: decimal;
+    a {
+      @include body1;
+      line-height: 1.8;
+      display: inline-block;
+    }
+    > li > a {
+      @include subtitle1;
+    }
+    > li > ol {
+      padding-left: 24px;
+      list-style: lower-alpha;
+      > li > ol {
+        padding-left: 24px;
+        list-style: lower-roman;
+      }
+    }
+  }
 
   @include responsive(md) {
-    padding: 32px 32px 32px 8px;
-    margin: 56px auto;
+    padding: 24px 24px 24px 8px;
+    margin: 48px auto;
+
+    > ol {
+      > li > ol {
+        padding-left: 32px;
+        > li > ol {
+          padding-left: 32px;
+        }
+      }
+    }
   }
 }

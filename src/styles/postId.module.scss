@@ -12,13 +12,23 @@
       width: calc(100% - 160px - 56px);
     }
 
+    > .cover-image {
+      background-color: $background90;
+      overflow: hidden;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      @include responsive(md) {
+          margin-bottom: 32px;
+      }
+    }
+
     > h1 {
       @include headline4;
-      margin: 24px auto;
+      margin: auto auto 8px auto;
 
       @include responsive(md) {
         @include headline3;
-        margin: 40px auto;
+        margin: auto auto 12px auto;
       }
     }
 
@@ -47,7 +57,7 @@
 
     > .article-body {
       @include article_body2;
-      margin: 48px auto;
+      margin: 40px auto;
 
       p {
         margin: 0 auto 32px auto;
@@ -59,6 +69,14 @@
           background: $background90;
           padding: 2px 8px;
           border-radius: 4px;
+        }
+      }
+
+      ul {
+        margin: 0 auto 32px auto;
+        padding-left: 20px;
+        > li {
+          margin: 4px auto 4px auto;
         }
       }
 
@@ -144,7 +162,7 @@
               content: 'Bash';
             }
           }
-          &[class*='javascrip'] {
+          &[class*='javascript'] {
             &::before {
               content: 'JavaScript';
             }
@@ -184,13 +202,17 @@
 
       @include responsive(md) {
         @include article_body1;
-        margin: 56px auto;
+        margin: 48px auto;
 
         p {
           margin: 0 auto 48px auto;
           > code {
             @include article_code1;
           }
+        }
+
+        ul {
+          margin: 0 auto 48px auto;
         }
 
         a {
