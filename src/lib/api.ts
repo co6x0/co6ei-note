@@ -155,7 +155,7 @@ export const getPostsByCategory = <
   name: string,
   fields: T
 ): R[] => {
-  const posts = getAllPosts(['categories', 'slug'])
+  const posts = getAllPosts(['categories', 'slug', 'date'])
   const theCategoryIncludedPosts = posts
     .map((post) => {
       if (post.categories === undefined && name === 'Uncategorized') return post
@@ -169,6 +169,22 @@ export const getPostsByCategory = <
       return getPostBySlug(post.slug, fields)
     })
     .filter(nonNullable)
+
+  // dateプロパティを持つPostかを判別する型ガード
+  const hasDateProperty = (
+    posts: NonNullable<ResultGetPost<T>>[]
+  ): posts is NonNullable<ResultGetPost<T> & { date: string }>[] => {
+    return posts.every((post) => hasProperty(post, 'date'))
+  }
+
+  if (fields.includes('date') && hasDateProperty(requestedPosts)) {
+    // dateに基づき降順に並べ替える
+    posts.sort((postA, postB) => {
+      const formatDateA = dayjs(postA.date).unix()
+      const formatDateB = dayjs(postB.date).unix()
+      return formatDateA > formatDateB ? -1 : 1
+    })
+  }
 
   return requestedPosts as R[]
 }

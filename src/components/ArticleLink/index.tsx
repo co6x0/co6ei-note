@@ -17,6 +17,21 @@ type ResOgp = {
 }
 
 export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
+  const siteUrl = `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}`
+  const splitBaseUrl = (href: string) => href.replace(siteUrl, '')
+
+  // textにhrefと異なるテキストが設定されている場合はテキストリンクを使用する
+  if (href === '#') {
+    return <Link href={splitBaseUrl(href)}>{text}</Link>
+  }
+  if (text !== undefined && text !== href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        {text}
+      </a>
+    )
+  }
+
   const fetcher = async (href: string): Promise<ResOgp> => {
     const response = await fetch(`/api/getOgp?url=${href}`)
 
@@ -31,16 +46,8 @@ export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
 
     return response.json()
   }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, error } = useSWR(href, fetcher)
-
-  // textにhrefと異なるテキストが設定されている場合はテキストリンクを使用する
-  if (text !== undefined && text !== href) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer">
-        {text}
-      </a>
-    )
-  }
 
   if (error) {
     return (
@@ -79,9 +86,6 @@ export const ArticleLink: React.VFC<Props> = ({ href, text }) => {
   }
 
   // 当ブログのURLの場合はサイト内リンクを使用する
-  const siteUrl = `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}`
-  const splitBaseUrl = (href: string) => href.replace(siteUrl, '')
-
   return href.startsWith(siteUrl) ? (
     <Link href={splitBaseUrl(href)}>
       <a className={styles.card}>
