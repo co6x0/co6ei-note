@@ -5,6 +5,7 @@ import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeReact from 'rehype-react'
 import rehypeHighlight from 'rehype-highlight'
+import rehypeToc from 'rehype-toc'
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/a11y-dark.css'
 import { getPostSlugs, getPostBySlug, getPostCategories } from 'lib/api'
@@ -88,10 +89,21 @@ const Post: NextPage<Props> = ({ postData, content, categories }) => {
   const processor = unified()
     .use(rehypeParse, { fragment: true })
     .use(rehypeHighlight)
+    .use(rehypeToc, { cssClasses: { toc: 'rehype-toc' } })
     // @ts-ignore: なぜかpropsの型にany/unknown以外を指定できない
     .use(rehypeReact, {
       createElement,
       components: {
+        nav: (props: { className: string; children: any[] }) => {
+          if (props.children[0].props.children === undefined) return null
+          return (
+            <nav className={props.className}>
+              {props.children.map((child) => {
+                return child
+              })}
+            </nav>
+          )
+        },
         a: (props: { href: string; children?: string[] }) => {
           return (
             <ArticleLink
