@@ -12,6 +12,12 @@
       width: calc(100% - 160px - 56px);
     }
 
+    > .cover-image {
+      background-color: $background90;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
     > h1 {
       @include headline4;
       margin: 24px auto;

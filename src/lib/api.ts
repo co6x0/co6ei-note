@@ -67,6 +67,10 @@ export const getPostBySlug = <R extends ResultGetPost<T>, T extends PostFields>(
   // ここまで処理が進んだ時点で{}が{}のまま返ることは無いのでas Rとする
   let post = {} as R
   for (const field of unDuplicatedFields) {
+    if (field === 'directoryName') {
+      post = { ...post, [field]: directoryName }
+      continue
+    }
     if (field === 'slug') {
       post = { ...post, [field]: slug }
       continue

@@ -1,0 +1,15 @@
+@use 'styles/variables' as *;
+
+.article-image {
+  position: relative;
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: solid 1px $border_black;
+  &::before {
+    content: '';
+    width: 100%;
+    display: block;
+    padding-top: calc(100% / 16 * 9);
+  }
+}

@@ -1,5 +1,6 @@
 type Post = {
   slug: string
+  directoryName: string
   title: string
   date: string
   content: string
@@ -7,9 +8,6 @@ type Post = {
   tags?: string[]
   categories?: string[]
   coverImage?: string
-  ogImage?: {
-    url: string
-  }
 }
 
 type PostCategory = {

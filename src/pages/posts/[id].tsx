@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { createElement } from 'react'
 import { useRouter } from 'next/router'
 import { unified } from 'unified'
@@ -10,6 +11,7 @@ import { getPostSlugs, getPostBySlug, getPostCategories } from 'lib/api'
 import { markdownToHtml } from 'lib/markdownToHtml'
 import { HtmlHead } from 'components/HtmlHead'
 import { ArticleLink } from 'components/ArticleLink'
+import { ArticleImage } from 'components/ArticleImage'
 import { ShareButtons } from 'components/ShareButtons'
 import { SideNav } from 'components/SideNav'
 import { PostDate } from 'components/PostDate'
@@ -46,6 +48,7 @@ const postFields = [
   'coverImage',
   'slug',
   'content',
+  'directoryName',
 ] as const
 
 export const getStaticProps: GetStaticProps<{
@@ -97,8 +100,26 @@ const Post: NextPage<Props> = ({ postData, content, categories }) => {
             />
           )
         },
+        img: (props: { alt?: string; src: string; children?: string[] }) => {
+          const fileName = props.src.slice(
+            props.src.lastIndexOf('/') + 1,
+            props.src.length
+          )
+          const srcPath = `/images/posts/${postData.directoryName}/${fileName}`
+          return (
+            <ArticleImage
+              src={srcPath}
+              alt={props.alt}
+              directoryName={postData.directoryName}
+            />
+          )
+        },
       },
     })
+
+  const coverImage =
+    postData.coverImage &&
+    `/images/posts/${postData.directoryName}/${postData.coverImage}`
 
   return (
     <div className={styles.root}>
@@ -106,15 +127,26 @@ const Post: NextPage<Props> = ({ postData, content, categories }) => {
         title={postData.title}
         description={postData.excerpt}
         path={router.asPath}
-        // imageSrc={
-        //   featuredImage
-        //     ? featuredImage.guid.rendered
-        //     : `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}/images/default-cover-image.png`
-        // }
+        imageSrc={
+          coverImage
+            ? `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}/${coverImage}`
+            : `https://${process.env.NEXT_PUBLIC_SITE_DOMAIN}/images/default-cover-image.png`
+        }
       />
 
       <article>
-        {/* <CoverImage /> */}
+        {coverImage && (
+          <div className={styles['cover-image']}>
+            <Image
+              src={coverImage}
+              alt={postData.title + 'のアイキャッチ画像'}
+              layout="responsive"
+              width={2400}
+              height={1260}
+              objectFit="contain"
+            />
+          </div>
+        )}
         <h1>{postData.title}</h1>
         <div className={styles['head-bottom']}>
           <PostDate dateString={postData.date} />
