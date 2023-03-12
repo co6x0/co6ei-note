@@ -17,21 +17,21 @@ export const Footer: React.VFC = () => {
       <div className={styles.links}>
         <div>
           <a
-            href="https://twitter.com/co6ei"
+            href="https://twitter.com/co6x0"
             target="_blank"
             rel="noopener noreferrer"
           >
             <IconTwitter title="Twitter" />
           </a>
           <a
-            href="https://note.com/sixa_nao"
+            href="https://note.com/co6x0"
             target="_blank"
             rel="noopener noreferrer"
           >
             <IconNote title="Note" />
           </a>
           <a
-            href="https://github.com/naokomura"
+            href="https://github.com/co6x0"
             target="_blank"
             rel="noopener noreferrer"
           >
